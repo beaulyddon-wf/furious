@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title>webapp.py</title>
+  <link rel="stylesheet" href="../../../pycco.css">
+  <script src="http://code.jquery.com/jquery-latest.js"></script>
+  <script type="text/javascript" charset="utf-8">
+    var slide_it = function( main, details )
+    {
+        main = "#".concat( main );
+        details = "#".concat( details );
+        $(main).click( function() {
+            if ( $( details ).is( ':hidden' ) ) {
+                $( main ).addClass( "active" );
+                $( details ).slideDown( 'fast' );
+            }
+            else {
+                $( details ).slideUp( 'fast' );
+                $( main ).removeClass( "active" );
+            }
+        });
+    };
+</script>
+</head>
+<body>
+<div id="background"></div>
+<div id='container'>
+
+  <div id="jump_to">
+    Jump To &hellip;
+    <div id="jump_wrapper">
+      <div id="jump_page">
+
+            <div id="1" >
+              <a class="source" id="pathname"> furious </a>
+            </div>
+
+            <div id="1_titles" style="display: none;">
+                <a class="source" id="filename" href="../__init__.html"> __init__.py </a>
+                <a class="source" id="filename" href="../async.html"> async.py </a>
+                <a class="source" id="filename" href="../batcher.html"> batcher.py </a>
+            </div>
+
+            <script type="text/javascript" charset="utf-8">
+                slide_it( "1",
+                          "1_titles" );
+              </script>
+            <div id="2" >
+              <a class="source" id="pathname"> furious/context </a>
+            </div>
+
+            <div id="2_titles" style="display: none;">
+                <a class="source" id="filename" href="../context/__init__.html"> __init__.py </a>
+                <a class="source" id="filename" href="../context/_execution.html"> _execution.py </a>
+                <a class="source" id="filename" href="../context/_local.html"> _local.py </a>
+                <a class="source" id="filename" href="../context/context.html"> context.py </a>
+            </div>
+
+            <script type="text/javascript" charset="utf-8">
+                slide_it( "2",
+                          "2_titles" );
+              </script>
+            <div id="3" >
+              <a class="source" id="pathname"> furious/handlers </a>
+            </div>
+
+            <div id="3_titles" style="display: none;">
+                <a class="source" id="filename" href="./__init__.html"> __init__.py </a>
+                <a class="source" id="filename" href="./webapp.html"> webapp.py </a>
+            </div>
+
+            <script type="text/javascript" charset="utf-8">
+                slide_it( "3",
+                          "3_titles" );
+              </script>
+            <div id="4" >
+              <a class="source" id="pathname"> furious </a>
+            </div>
+
+            <div id="4_titles" style="display: none;">
+                <a class="source" id="filename" href="../job_utils.html"> job_utils.py </a>
+                <a class="source" id="filename" href="../processors.html"> processors.py </a>
+            </div>
+
+            <script type="text/javascript" charset="utf-8">
+                slide_it( "4",
+                          "4_titles" );
+              </script>
+            <div id="5" >
+              <a class="source" id="pathname"> furious/tests </a>
+            </div>
+
+            <div id="5_titles" style="display: none;">
+                <a class="source" id="filename" href="../tests/__init__.html"> __init__.py </a>
+            </div>
+
+            <script type="text/javascript" charset="utf-8">
+                slide_it( "5",
+                          "5_titles" );
+              </script>
+            <div id="6" >
+              <a class="source" id="pathname"> furious/tests/context </a>
+            </div>
+
+            <div id="6_titles" style="display: none;">
+                <a class="source" id="filename" href="../tests/context/__init__.html"> __init__.py </a>
+                <a class="source" id="filename" href="../tests/context/test_context.html"> test_context.py </a>
+                <a class="source" id="filename" href="../tests/context/test_execution_context.html"> test_execution_context.py </a>
+            </div>
+
+            <script type="text/javascript" charset="utf-8">
+                slide_it( "6",
+                          "6_titles" );
+              </script>
+            <div id="7" >
+              <a class="source" id="pathname"> furious/tests </a>
+            </div>
+
+            <div id="7_titles" style="display: none;">
+                <a class="source" id="filename" href="../tests/test_async.html"> test_async.py </a>
+                <a class="source" id="filename" href="../tests/test_batcher.html"> test_batcher.py </a>
+                <a class="source" id="filename" href="../tests/test_job_utils.html"> test_job_utils.py </a>
+                <a class="source" id="filename" href="../tests/test_processors.html"> test_processors.py </a>
+            </div>
+
+            <script type="text/javascript" charset="utf-8">
+                slide_it( "7",
+                          "7_titles" );
+              </script>
+
+      </div>
+    </div>
+  </div>
+
+  <div class='section'>
+    <div class='docs'><h1>webapp.py</h1></div>
+  </div>
+  <div class='clearall'>
+  <div class='section' id='section-0'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-0'>#</a>
+      </div>
+      <p>Copyright 2012 WebFilings, LLC</p>
+<p>Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at</p>
+<p>http://www.apache.org/licenses/LICENSE-2.0</p>
+<p>Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="kn">import</span> <span class="nn">webapp2</span>
+
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">process_async_task</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-1'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-1'>#</a>
+      </div>
+      <p>Handles requests for the webapp framework.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">class</span> <span class="nc">AsyncJobHandler</span><span class="p">(</span><span class="n">webapp2</span><span class="o">.</span><span class="n">RequestHandler</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-2'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-2'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_handle_task</span><span class="p">()</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-3'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-3'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_handle_task</span><span class="p">()</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-4'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-4'>#</a>
+      </div>
+      <p>Pass request info to the async framework.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">_handle_task</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-5'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-5'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="n">headers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">headers</span>
+
+        <span class="n">staus_code</span><span class="p">,</span> <span class="n">output</span> <span class="o">=</span> <span class="n">process_async_task</span><span class="p">(</span><span class="n">headers</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">body</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">set_status</span><span class="p">(</span><span class="n">staus_code</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">out</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">webapp2</span><span class="o">.</span><span class="n">WSGIApplication</span><span class="p">([</span>
+    <span class="p">(</span><span class="s">&#39;.*&#39;</span><span class="p">,</span> <span class="n">AsyncJobHandler</span><span class="p">)</span>
+<span class="p">])</span>
+
+</pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+</div>
+</body>

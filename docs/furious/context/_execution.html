@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title>_execution.py</title>
+  <link rel="stylesheet" href="../../../pycco.css">
+  <script src="http://code.jquery.com/jquery-latest.js"></script>
+  <script type="text/javascript" charset="utf-8">
+    var slide_it = function( main, details )
+    {
+        main = "#".concat( main );
+        details = "#".concat( details );
+        $(main).click( function() {
+            if ( $( details ).is( ':hidden' ) ) {
+                $( main ).addClass( "active" );
+                $( details ).slideDown( 'fast' );
+            }
+            else {
+                $( details ).slideUp( 'fast' );
+                $( main ).removeClass( "active" );
+            }
+        });
+    };
+</script>
+</head>
+<body>
+<div id="background"></div>
+<div id='container'>
+
+  <div id="jump_to">
+    Jump To &hellip;
+    <div id="jump_wrapper">
+      <div id="jump_page">
+
+            <div id="1" >
+              <a class="source" id="pathname"> furious </a>
+            </div>
+
+            <div id="1_titles" style="display: none;">
+                <a class="source" id="filename" href="../__init__.html"> __init__.py </a>
+                <a class="source" id="filename" href="../async.html"> async.py </a>
+                <a class="source" id="filename" href="../batcher.html"> batcher.py </a>
+            </div>
+
+            <script type="text/javascript" charset="utf-8">
+                slide_it( "1",
+                          "1_titles" );
+              </script>
+            <div id="2" >
+              <a class="source" id="pathname"> furious/context </a>
+            </div>
+
+            <div id="2_titles" style="display: none;">
+                <a class="source" id="filename" href="./__init__.html"> __init__.py </a>
+                <a class="source" id="filename" href="./_execution.html"> _execution.py </a>
+                <a class="source" id="filename" href="./_local.html"> _local.py </a>
+                <a class="source" id="filename" href="./context.html"> context.py </a>
+            </div>
+
+            <script type="text/javascript" charset="utf-8">
+                slide_it( "2",
+                          "2_titles" );
+              </script>
+            <div id="3" >
+              <a class="source" id="pathname"> furious/handlers </a>
+            </div>
+
+            <div id="3_titles" style="display: none;">
+                <a class="source" id="filename" href="../handlers/__init__.html"> __init__.py </a>
+                <a class="source" id="filename" href="../handlers/webapp.html"> webapp.py </a>
+            </div>
+
+            <script type="text/javascript" charset="utf-8">
+                slide_it( "3",
+                          "3_titles" );
+              </script>
+            <div id="4" >
+              <a class="source" id="pathname"> furious </a>
+            </div>
+
+            <div id="4_titles" style="display: none;">
+                <a class="source" id="filename" href="../job_utils.html"> job_utils.py </a>
+                <a class="source" id="filename" href="../processors.html"> processors.py </a>
+            </div>
+
+            <script type="text/javascript" charset="utf-8">
+                slide_it( "4",
+                          "4_titles" );
+              </script>
+            <div id="5" >
+              <a class="source" id="pathname"> furious/tests </a>
+            </div>
+
+            <div id="5_titles" style="display: none;">
+                <a class="source" id="filename" href="../tests/__init__.html"> __init__.py </a>
+            </div>
+
+            <script type="text/javascript" charset="utf-8">
+                slide_it( "5",
+                          "5_titles" );
+              </script>
+            <div id="6" >
+              <a class="source" id="pathname"> furious/tests/context </a>
+            </div>
+
+            <div id="6_titles" style="display: none;">
+                <a class="source" id="filename" href="../tests/context/__init__.html"> __init__.py </a>
+                <a class="source" id="filename" href="../tests/context/test_context.html"> test_context.py </a>
+                <a class="source" id="filename" href="../tests/context/test_execution_context.html"> test_execution_context.py </a>
+            </div>
+
+            <script type="text/javascript" charset="utf-8">
+                slide_it( "6",
+                          "6_titles" );
+              </script>
+            <div id="7" >
+              <a class="source" id="pathname"> furious/tests </a>
+            </div>
+
+            <div id="7_titles" style="display: none;">
+                <a class="source" id="filename" href="../tests/test_async.html"> test_async.py </a>
+                <a class="source" id="filename" href="../tests/test_batcher.html"> test_batcher.py </a>
+                <a class="source" id="filename" href="../tests/test_job_utils.html"> test_job_utils.py </a>
+                <a class="source" id="filename" href="../tests/test_processors.html"> test_processors.py </a>
+            </div>
+
+            <script type="text/javascript" charset="utf-8">
+                slide_it( "7",
+                          "7_titles" );
+              </script>
+
+      </div>
+    </div>
+  </div>
+
+  <div class='section'>
+    <div class='docs'><h1>_execution.py</h1></div>
+  </div>
+  <div class='clearall'>
+  <div class='section' id='section-0'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-0'>#</a>
+      </div>
+      <p>Copyright 2012 WebFilings, LLC</p>
+<p>Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at</p>
+<p>http://www.apache.org/licenses/LICENSE-2.0</p>
+<p>Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-1'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-1'>#</a>
+      </div>
+      <p>The ExecutionContext is used to wrap the execution of an Async job to provide
+a mechanism to cleanly make information available without the need to pass a
+lot of state between functions.</p>
+<p>NOTE: Direct usage of this is only needed in very special cases.  Yours
+probably is not one of those special cases.</p>
+<p>Usage:</p>
+<pre><code>with execution_context_from_async(async) as execution_context:
+    run_job()
+</code></pre>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">_local</span>
+
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;ContextExistsError&quot;</span><span class="p">,</span>
+           <span class="s">&quot;CorruptContextError&quot;</span><span class="p">,</span>
+           <span class="s">&quot;execution_context_from_async&quot;</span><span class="p">]</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-2'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-2'>#</a>
+      </div>
+      <p>Call made within context that should not be.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">class</span> <span class="nc">ContextExistsError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-3'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-3'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-4'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-4'>#</a>
+      </div>
+      <p>ExecutionContext raised when the execution context stack is corrupted.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">class</span> <span class="nc">CorruptContextError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-5'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-5'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">exc_info</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">exc_info</span> <span class="o">=</span> <span class="n">exc_info</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-6'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-6'>#</a>
+      </div>
+      <p>Instantiate a new _ExecutionContext and store a reference to it in the</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">execution_context_from_async</span><span class="p">(</span><span class="n">async</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-7'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-7'>#</a>
+      </div>
+      <p>global async context to make later retrieval easier.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="n">local_context</span> <span class="o">=</span> <span class="n">_local</span><span class="o">.</span><span class="n">get_local_context</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">local_context</span><span class="o">.</span><span class="n">_executing_async_context</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">ContextExistsError</span>
+
+    <span class="n">execution_context</span> <span class="o">=</span> <span class="n">_ExecutionContext</span><span class="p">(</span><span class="n">async</span><span class="p">)</span>
+    <span class="n">local_context</span><span class="o">.</span><span class="n">_executing_async_context</span> <span class="o">=</span> <span class="n">execution_context</span>
+    <span class="k">return</span> <span class="n">execution_context</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-8'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-8'>#</a>
+      </div>
+      <p>_ExecutionContext objects are used when running an async task to provide</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">class</span> <span class="nc">_ExecutionContext</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-9'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-9'>#</a>
+      </div>
+      <p>easy access to the async object.</p>
+<p>Initialize a context with an async task.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">async</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-10'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-10'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="kn">from</span> <span class="nn">..async</span> <span class="kn">import</span> <span class="n">Async</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">async</span><span class="p">,</span> <span class="n">Async</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&quot;async must be an Async instance.&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_async</span> <span class="o">=</span> <span class="n">async</span>
+        <span class="n">async</span><span class="o">.</span><span class="n">set_execution_context</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-11'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-11'>#</a>
+      </div>
+      <p>Get a reference to this context's async object.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">async</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-12'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-12'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_async</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-13'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-13'>#</a>
+      </div>
+      <p>Enter the context, add this async to the executing context stack.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-14'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-14'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="n">_local</span><span class="o">.</span><span class="n">get_local_context</span><span class="p">()</span><span class="o">.</span><span class="n">_executing_async</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_async</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-15'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-15'>#</a>
+      </div>
+      <p>Exit the context, pop this async from the executing context stack.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">exc_info</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-16'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-16'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="n">local_context</span> <span class="o">=</span> <span class="n">_local</span><span class="o">.</span><span class="n">get_local_context</span><span class="p">()</span>
+        <span class="n">last</span> <span class="o">=</span> <span class="n">local_context</span><span class="o">.</span><span class="n">_executing_async</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">last</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_async</span><span class="p">:</span>
+            <span class="n">local_context</span><span class="o">.</span><span class="n">_executing_async</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">last</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">CorruptContextError</span><span class="p">(</span><span class="o">*</span><span class="n">exc_info</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">False</span>
+
+</pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+</div>
+</body>

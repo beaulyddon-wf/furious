@@ -1,0 +1,1779 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title>test_async.py</title>
+  <link rel="stylesheet" href="../../../pycco.css">
+  <script src="http://code.jquery.com/jquery-latest.js"></script>
+  <script type="text/javascript" charset="utf-8">
+    var slide_it = function( main, details )
+    {
+        main = "#".concat( main );
+        details = "#".concat( details );
+        $(main).click( function() {
+            if ( $( details ).is( ':hidden' ) ) {
+                $( main ).addClass( "active" );
+                $( details ).slideDown( 'fast' );
+            }
+            else {
+                $( details ).slideUp( 'fast' );
+                $( main ).removeClass( "active" );
+            }
+        });
+    };
+</script>
+</head>
+<body>
+<div id="background"></div>
+<div id='container'>
+
+  <div id="jump_to">
+    Jump To &hellip;
+    <div id="jump_wrapper">
+      <div id="jump_page">
+
+            <div id="1" >
+              <a class="source" id="pathname"> furious </a>
+            </div>
+
+            <div id="1_titles" style="display: none;">
+                <a class="source" id="filename" href="../__init__.html"> __init__.py </a>
+                <a class="source" id="filename" href="../async.html"> async.py </a>
+                <a class="source" id="filename" href="../batcher.html"> batcher.py </a>
+            </div>
+
+            <script type="text/javascript" charset="utf-8">
+                slide_it( "1",
+                          "1_titles" );
+              </script>
+            <div id="2" >
+              <a class="source" id="pathname"> furious/context </a>
+            </div>
+
+            <div id="2_titles" style="display: none;">
+                <a class="source" id="filename" href="../context/__init__.html"> __init__.py </a>
+                <a class="source" id="filename" href="../context/_execution.html"> _execution.py </a>
+                <a class="source" id="filename" href="../context/_local.html"> _local.py </a>
+                <a class="source" id="filename" href="../context/context.html"> context.py </a>
+            </div>
+
+            <script type="text/javascript" charset="utf-8">
+                slide_it( "2",
+                          "2_titles" );
+              </script>
+            <div id="3" >
+              <a class="source" id="pathname"> furious/handlers </a>
+            </div>
+
+            <div id="3_titles" style="display: none;">
+                <a class="source" id="filename" href="../handlers/__init__.html"> __init__.py </a>
+                <a class="source" id="filename" href="../handlers/webapp.html"> webapp.py </a>
+            </div>
+
+            <script type="text/javascript" charset="utf-8">
+                slide_it( "3",
+                          "3_titles" );
+              </script>
+            <div id="4" >
+              <a class="source" id="pathname"> furious </a>
+            </div>
+
+            <div id="4_titles" style="display: none;">
+                <a class="source" id="filename" href="../job_utils.html"> job_utils.py </a>
+                <a class="source" id="filename" href="../processors.html"> processors.py </a>
+            </div>
+
+            <script type="text/javascript" charset="utf-8">
+                slide_it( "4",
+                          "4_titles" );
+              </script>
+            <div id="5" >
+              <a class="source" id="pathname"> furious/tests </a>
+            </div>
+
+            <div id="5_titles" style="display: none;">
+                <a class="source" id="filename" href="./__init__.html"> __init__.py </a>
+            </div>
+
+            <script type="text/javascript" charset="utf-8">
+                slide_it( "5",
+                          "5_titles" );
+              </script>
+            <div id="6" >
+              <a class="source" id="pathname"> furious/tests/context </a>
+            </div>
+
+            <div id="6_titles" style="display: none;">
+                <a class="source" id="filename" href="context/__init__.html"> __init__.py </a>
+                <a class="source" id="filename" href="context/test_context.html"> test_context.py </a>
+                <a class="source" id="filename" href="context/test_execution_context.html"> test_execution_context.py </a>
+            </div>
+
+            <script type="text/javascript" charset="utf-8">
+                slide_it( "6",
+                          "6_titles" );
+              </script>
+            <div id="7" >
+              <a class="source" id="pathname"> furious/tests </a>
+            </div>
+
+            <div id="7_titles" style="display: none;">
+                <a class="source" id="filename" href="./test_async.html"> test_async.py </a>
+                <a class="source" id="filename" href="./test_batcher.html"> test_batcher.py </a>
+                <a class="source" id="filename" href="./test_job_utils.html"> test_job_utils.py </a>
+                <a class="source" id="filename" href="./test_processors.html"> test_processors.py </a>
+            </div>
+
+            <script type="text/javascript" charset="utf-8">
+                slide_it( "7",
+                          "7_titles" );
+              </script>
+
+      </div>
+    </div>
+  </div>
+
+  <div class='section'>
+    <div class='docs'><h1>test_async.py</h1></div>
+  </div>
+  <div class='clearall'>
+  <div class='section' id='section-0'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-0'>#</a>
+      </div>
+      <p>Copyright 2012 WebFilings, LLC</p>
+<p>Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at</p>
+<p>http://www.apache.org/licenses/LICENSE-2.0</p>
+<p>Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="kn">import</span> <span class="nn">json</span>
+
+<span class="kn">import</span> <span class="nn">unittest</span>
+
+<span class="kn">from</span> <span class="nn">mock</span> <span class="kn">import</span> <span class="n">patch</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-1'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-1'>#</a>
+      </div>
+      <p>Ensure that defaults decorator works as expected.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">class</span> <span class="nc">TestDefaultsDecorator</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-2'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-2'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-3'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-3'>#</a>
+      </div>
+      <p>Ensure defaults decorator preserves decorated function's name.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">test_decorated_name_is_preserved</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-4'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-4'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="kn">from</span> <span class="nn">furious.async</span> <span class="kn">import</span> <span class="n">defaults</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-5'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-5'>#</a>
+      </div>
+      <p>Ensure defaults decorator sets options on decorated function.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="nd">@defaults</span><span class="p">(</span><span class="n">test</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+        <span class="k">def</span> <span class="nf">decorated_function</span><span class="p">():</span>
+            <span class="k">pass</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s">&#39;decorated_function&#39;</span><span class="p">,</span> <span class="n">decorated_function</span><span class="o">.</span><span class="n">__name__</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">test_decorate_with_options</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-6'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-6'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="kn">from</span> <span class="nn">furious.async</span> <span class="kn">import</span> <span class="n">defaults</span>
+
+        <span class="n">options</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;test&#39;</span><span class="p">:</span> <span class="s">&#39;me&#39;</span><span class="p">}</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-7'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-7'>#</a>
+      </div>
+      <p>Ensure defaults decorator raise error if job in options.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="nd">@defaults</span><span class="p">(</span><span class="o">**</span><span class="n">options</span><span class="p">)</span>
+        <span class="k">def</span> <span class="nf">decorated_function</span><span class="p">():</span>
+            <span class="k">pass</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="n">decorated_function</span><span class="o">.</span><span class="n">_async_options</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">test_raises_on_job_in_options</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-8'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-8'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="kn">from</span> <span class="nn">furious.async</span> <span class="kn">import</span> <span class="n">defaults</span>
+
+        <span class="n">options</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;job&#39;</span><span class="p">:</span> <span class="s">&#39;me&#39;</span><span class="p">}</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertRaises</span><span class="p">(</span><span class="ne">AssertionError</span><span class="p">,</span> <span class="n">defaults</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-9'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-9'>#</a>
+      </div>
+      <p>Ensure defaults decorator raise error if callbacks is in options.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="nd">@unittest.skip</span><span class="p">(</span><span class="s">&#39;Not sure if this is needed.&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">test_raises_on_callbacks_in_options</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-10'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-10'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="kn">from</span> <span class="nn">furious.async</span> <span class="kn">import</span> <span class="n">defaults</span>
+
+        <span class="n">options</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;callbacks&#39;</span><span class="p">:</span> <span class="s">&#39;me&#39;</span><span class="p">}</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertRaises</span><span class="p">(</span><span class="ne">AssertionError</span><span class="p">,</span> <span class="n">defaults</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-11'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-11'>#</a>
+      </div>
+      <p>Ensure defaults decorator raises error with a mix of good/bad</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">test_raises_on_good_with_bad_options</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-12'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-12'>#</a>
+      </div>
+      <p>options.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="kn">from</span> <span class="nn">furious.async</span> <span class="kn">import</span> <span class="n">defaults</span>
+
+        <span class="n">options</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;job&#39;</span><span class="p">:</span> <span class="s">&#39;me&#39;</span><span class="p">,</span> <span class="s">&#39;other&#39;</span><span class="p">:</span> <span class="s">&#39;option&#39;</span><span class="p">}</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertRaises</span><span class="p">(</span><span class="ne">AssertionError</span><span class="p">,</span> <span class="n">defaults</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-13'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-13'>#</a>
+      </div>
+      <p>Ensure the decorated function still runs.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">test_function_is_runnable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-14'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-14'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="kn">from</span> <span class="nn">furious.async</span> <span class="kn">import</span> <span class="n">defaults</span>
+
+        <span class="n">options</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;other&#39;</span><span class="p">:</span> <span class="s">&#39;option&#39;</span><span class="p">}</span>
+
+        <span class="n">check_value</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;ran&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">}</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-15'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-15'>#</a>
+      </div>
+      <p>Make sure Async produces correct Task objects.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="nd">@defaults</span><span class="p">(</span><span class="o">**</span><span class="n">options</span><span class="p">)</span>
+        <span class="k">def</span> <span class="nf">some_method</span><span class="p">():</span>
+            <span class="n">check_value</span><span class="p">[</span><span class="s">&#39;ran&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
+
+        <span class="n">some_method</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">check_value</span><span class="p">[</span><span class="s">&#39;ran&#39;</span><span class="p">])</span>
+
+
+<span class="k">class</span> <span class="nc">TestAsync</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-16'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-16'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-17'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-17'>#</a>
+      </div>
+      <p>Ensure passing None as function raises.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">test_none_function</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-18'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-18'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="kn">from</span> <span class="nn">furious.async</span> <span class="kn">import</span> <span class="n">Async</span>
+        <span class="kn">from</span> <span class="nn">furious.job_utils</span> <span class="kn">import</span> <span class="n">BadFunctionPathError</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertRaises</span><span class="p">(</span><span class="n">BadFunctionPathError</span><span class="p">,</span> <span class="n">Async</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-19'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-19'>#</a>
+      </div>
+      <p>Ensure passing None as function raises.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">test_empty_function_path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-20'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-20'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="kn">from</span> <span class="nn">furious.async</span> <span class="kn">import</span> <span class="n">Async</span>
+        <span class="kn">from</span> <span class="nn">furious.job_utils</span> <span class="kn">import</span> <span class="n">BadFunctionPathError</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertRaises</span><span class="p">(</span><span class="n">BadFunctionPathError</span><span class="p">,</span> <span class="n">Async</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-21'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-21'>#</a>
+      </div>
+      <p>Ensure good args and kwargs generate a well-formed job tuple.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">test_job_params</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-22'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-22'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="kn">from</span> <span class="nn">furious.async</span> <span class="kn">import</span> <span class="n">Async</span>
+
+        <span class="n">job</span> <span class="o">=</span> <span class="p">(</span><span class="s">&quot;test&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">{</span><span class="s">&#39;a&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">&#39;b&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s">&#39;c&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">})</span>
+        <span class="n">async_job</span> <span class="o">=</span> <span class="n">Async</span><span class="p">(</span><span class="o">*</span><span class="n">job</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">job</span><span class="p">,</span> <span class="n">async_job</span><span class="o">.</span><span class="n">_options</span><span class="p">[</span><span class="s">&#39;job&#39;</span><span class="p">])</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-23'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-23'>#</a>
+      </div>
+      <p>Ensure no args and no kwargs generate a well-formed job tuple.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">test_no_args_or_kwargs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-24'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-24'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="kn">from</span> <span class="nn">furious.async</span> <span class="kn">import</span> <span class="n">Async</span>
+
+        <span class="n">function</span> <span class="o">=</span> <span class="s">&quot;test.func&quot;</span>
+        <span class="n">async_job</span> <span class="o">=</span> <span class="n">Async</span><span class="p">(</span><span class="n">function</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">function</span><span class="p">,</span> <span class="n">async_job</span><span class="o">.</span><span class="n">_function_path</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">((</span><span class="n">function</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">),</span> <span class="n">async_job</span><span class="o">.</span><span class="n">_options</span><span class="p">[</span><span class="s">&#39;job&#39;</span><span class="p">])</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-25'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-25'>#</a>
+      </div>
+      <p>Ensure args and no kwargs generate a well-formed job tuple.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">test_args_with_no_kwargs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-26'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-26'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="kn">from</span> <span class="nn">furious.async</span> <span class="kn">import</span> <span class="n">Async</span>
+
+        <span class="n">job</span> <span class="o">=</span> <span class="p">(</span><span class="s">&quot;test&quot;</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+        <span class="n">async_job</span> <span class="o">=</span> <span class="n">Async</span><span class="p">(</span><span class="o">*</span><span class="n">job</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">job</span> <span class="o">+</span> <span class="p">(</span><span class="bp">None</span><span class="p">,),</span> <span class="n">async_job</span><span class="o">.</span><span class="n">_options</span><span class="p">[</span><span class="s">&#39;job&#39;</span><span class="p">])</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-27'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-27'>#</a>
+      </div>
+      <p>Ensure no args with kwargs generate a well-formed job tuple.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">test_no_args_with_kwargs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-28'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-28'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="kn">from</span> <span class="nn">furious.async</span> <span class="kn">import</span> <span class="n">Async</span>
+
+        <span class="n">job</span> <span class="o">=</span> <span class="p">(</span><span class="s">&quot;test&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;a&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">&#39;b&#39;</span><span class="p">:</span> <span class="s">&#39;c&#39;</span><span class="p">,</span> <span class="s">&#39;alpha&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">})</span>
+        <span class="n">async_job</span> <span class="o">=</span> <span class="n">Async</span><span class="p">(</span><span class="o">*</span><span class="n">job</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">job</span><span class="p">,</span> <span class="n">async_job</span><span class="o">.</span><span class="n">_options</span><span class="p">[</span><span class="s">&#39;job&#39;</span><span class="p">])</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-29'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-29'>#</a>
+      </div>
+      <p>Ensure the job tuple contains the callable path.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">test_gets_callable_path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-30'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-30'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="kn">from</span> <span class="nn">furious.async</span> <span class="kn">import</span> <span class="n">Async</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-31'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-31'>#</a>
+      </div>
+      <p>Will look like is at the module level.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="k">def</span> <span class="nf">some_function</span><span class="p">():</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-32'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-32'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>            <span class="k">pass</span>
+
+        <span class="n">job_args</span> <span class="o">=</span> <span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">{</span><span class="s">&#39;a&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">&#39;b&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s">&#39;c&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">})</span>
+        <span class="n">async_job</span> <span class="o">=</span> <span class="n">Async</span><span class="p">(</span><span class="n">some_function</span><span class="p">,</span> <span class="o">*</span><span class="n">job_args</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span>
+            <span class="p">(</span><span class="s">&#39;furious.tests.test_async.some_function&#39;</span><span class="p">,)</span> <span class="o">+</span> <span class="n">job_args</span><span class="p">,</span>
+            <span class="n">async_job</span><span class="o">.</span><span class="n">_options</span><span class="p">[</span><span class="s">&#39;job&#39;</span><span class="p">])</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-33'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-33'>#</a>
+      </div>
+      <p>Ensure args and kwargs may be None.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">test_none_args_and_kwargs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-34'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-34'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="kn">from</span> <span class="nn">furious.async</span> <span class="kn">import</span> <span class="n">Async</span>
+
+        <span class="n">job</span> <span class="o">=</span> <span class="p">(</span><span class="s">&quot;something&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">,)</span>
+        <span class="n">async_job</span> <span class="o">=</span> <span class="n">Async</span><span class="p">(</span><span class="o">*</span><span class="n">job</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">job</span><span class="p">,</span> <span class="n">async_job</span><span class="o">.</span><span class="n">_options</span><span class="p">[</span><span class="s">&#39;job&#39;</span><span class="p">])</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-35'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-35'>#</a>
+      </div>
+      <p>Ensure the defaults decorator sets Async options.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">test_decorated_options</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-36'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-36'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="kn">from</span> <span class="nn">furious.async</span> <span class="kn">import</span> <span class="n">Async</span>
+        <span class="kn">from</span> <span class="nn">furious.async</span> <span class="kn">import</span> <span class="n">defaults</span>
+
+        <span class="n">options</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">&#39;other&#39;</span><span class="p">:</span> <span class="s">&#39;zzz&#39;</span><span class="p">,</span> <span class="s">&#39;nested&#39;</span><span class="p">:</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="mi">1</span><span class="p">}}</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-37'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-37'>#</a>
+      </div>
+      <p>Ensure options passed to init override decorated options.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="nd">@defaults</span><span class="p">(</span><span class="o">**</span><span class="n">options</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span>
+        <span class="k">def</span> <span class="nf">some_function</span><span class="p">():</span>
+            <span class="k">pass</span>
+
+        <span class="n">job</span> <span class="o">=</span> <span class="n">Async</span><span class="p">(</span><span class="n">some_function</span><span class="p">)</span>
+
+        <span class="n">options</span><span class="p">[</span><span class="s">&#39;job&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="s">&quot;furious.tests.test_async.some_function&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="n">job</span><span class="o">.</span><span class="n">_options</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">test_init_opts_supersede_decorated_options</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-38'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-38'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="kn">from</span> <span class="nn">furious.async</span> <span class="kn">import</span> <span class="n">Async</span>
+        <span class="kn">from</span> <span class="nn">furious.async</span> <span class="kn">import</span> <span class="n">defaults</span>
+
+        <span class="n">options</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">&#39;other&#39;</span><span class="p">:</span> <span class="s">&#39;zzz&#39;</span><span class="p">,</span> <span class="s">&#39;nested&#39;</span><span class="p">:</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="mi">1</span><span class="p">}}</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-39'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-39'>#</a>
+      </div>
+      <p>Ensure set_execution_context doesn't blow up.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="nd">@defaults</span><span class="p">(</span><span class="o">**</span><span class="n">options</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span>
+        <span class="k">def</span> <span class="nf">some_function</span><span class="p">():</span>
+            <span class="k">pass</span>
+
+        <span class="n">job</span> <span class="o">=</span> <span class="n">Async</span><span class="p">(</span><span class="n">some_function</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="mi">17</span><span class="p">,</span> <span class="n">other</span><span class="o">=</span><span class="s">&#39;abc&#39;</span><span class="p">)</span>
+
+        <span class="n">options</span><span class="p">[</span><span class="s">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">17</span>
+        <span class="n">options</span><span class="p">[</span><span class="s">&#39;other&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;abc&#39;</span>
+
+        <span class="n">options</span><span class="p">[</span><span class="s">&#39;job&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="s">&quot;furious.tests.test_async.some_function&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="n">job</span><span class="o">.</span><span class="n">_options</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">test_set_execution_context</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-40'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-40'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="kn">from</span> <span class="nn">furious.async</span> <span class="kn">import</span> <span class="n">Async</span>
+        <span class="n">Async</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="nb">dir</span><span class="p">)</span><span class="o">.</span><span class="n">set_execution_context</span><span class="p">(</span><span class="nb">object</span><span class="p">())</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-41'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-41'>#</a>
+      </div>
+      <p>Ensure set_execution_context requires a context argument.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">test_set_execution_context_requires_context</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-42'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-42'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="kn">from</span> <span class="nn">furious.async</span> <span class="kn">import</span> <span class="n">Async</span>
+        <span class="n">async</span> <span class="o">=</span> <span class="n">Async</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="nb">dir</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertRaises</span><span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span> <span class="n">async</span><span class="o">.</span><span class="n">set_execution_context</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-43'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-43'>#</a>
+      </div>
+      <p>Ensure calling set_execution_context twice raises</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">test_set_execution_context_disallows_double_set</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-44'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-44'>#</a>
+      </div>
+      <p>AlreadyInContextError.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="kn">from</span> <span class="nn">furious.async</span> <span class="kn">import</span> <span class="n">Async</span>
+        <span class="kn">from</span> <span class="nn">furious.context</span> <span class="kn">import</span> <span class="n">AlreadyInContextError</span>
+
+        <span class="n">async</span> <span class="o">=</span> <span class="n">Async</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="nb">dir</span><span class="p">)</span>
+        <span class="n">async</span><span class="o">.</span><span class="n">set_execution_context</span><span class="p">(</span><span class="nb">object</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertRaises</span><span class="p">(</span>
+            <span class="n">AlreadyInContextError</span><span class="p">,</span> <span class="n">async</span><span class="o">.</span><span class="n">set_execution_context</span><span class="p">,</span> <span class="nb">object</span><span class="p">())</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-45'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-45'>#</a>
+      </div>
+      <p>Ensure update_options updates the options.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">test_update_options</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-46'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-46'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="kn">from</span> <span class="nn">furious.async</span> <span class="kn">import</span> <span class="n">Async</span>
+
+        <span class="n">options</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">&#39;other&#39;</span><span class="p">:</span> <span class="s">&#39;zzz&#39;</span><span class="p">,</span> <span class="s">&#39;nested&#39;</span><span class="p">:</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="mi">1</span><span class="p">}}</span>
+
+        <span class="n">job</span> <span class="o">=</span> <span class="n">Async</span><span class="p">(</span><span class="s">&quot;nonexistant&quot;</span><span class="p">)</span>
+        <span class="n">job</span><span class="o">.</span><span class="n">update_options</span><span class="p">(</span><span class="o">**</span><span class="n">options</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span>
+
+        <span class="n">options</span><span class="p">[</span><span class="s">&#39;job&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="s">&quot;nonexistant&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="n">job</span><span class="o">.</span><span class="n">_options</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-47'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-47'>#</a>
+      </div>
+      <p>Ensure update_options supersedes the options set in init.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">test_update_options_supersede_init_opts</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-48'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-48'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="kn">from</span> <span class="nn">furious.async</span> <span class="kn">import</span> <span class="n">Async</span>
+
+        <span class="n">options</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">&#39;other&#39;</span><span class="p">:</span> <span class="s">&#39;zzz&#39;</span><span class="p">,</span> <span class="s">&#39;nested&#39;</span><span class="p">:</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="mi">1</span><span class="p">}}</span>
+
+        <span class="n">job</span> <span class="o">=</span> <span class="n">Async</span><span class="p">(</span><span class="s">&quot;nonexistant&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span>
+
+        <span class="n">job</span><span class="o">.</span><span class="n">update_options</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mi">23</span><span class="p">,</span> <span class="n">other</span><span class="o">=</span><span class="s">&#39;stuff&#39;</span><span class="p">)</span>
+
+        <span class="n">options</span><span class="p">[</span><span class="s">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">23</span>
+        <span class="n">options</span><span class="p">[</span><span class="s">&#39;other&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;stuff&#39;</span>
+
+        <span class="n">options</span><span class="p">[</span><span class="s">&#39;job&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="s">&quot;nonexistant&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="n">job</span><span class="o">.</span><span class="n">_options</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-49'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-49'>#</a>
+      </div>
+      <p>Ensure get_options returns the job options.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">test_get_options</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-50'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-50'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="kn">from</span> <span class="nn">furious.async</span> <span class="kn">import</span> <span class="n">Async</span>
+
+        <span class="n">options</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">&#39;other&#39;</span><span class="p">:</span> <span class="s">&#39;zzz&#39;</span><span class="p">,</span> <span class="s">&#39;nested&#39;</span><span class="p">:</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="mi">1</span><span class="p">}}</span>
+
+        <span class="n">job</span> <span class="o">=</span> <span class="n">Async</span><span class="p">(</span><span class="s">&quot;nonexistant&quot;</span><span class="p">)</span>
+        <span class="n">job</span><span class="o">.</span><span class="n">_options</span> <span class="o">=</span> <span class="n">options</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="n">job</span><span class="o">.</span><span class="n">get_options</span><span class="p">())</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-51'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-51'>#</a>
+      </div>
+      <p>Ensure get_headers returns the job headers.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">test_get_headers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-52'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-52'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="kn">from</span> <span class="nn">furious.async</span> <span class="kn">import</span> <span class="n">Async</span>
+
+        <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;other&#39;</span><span class="p">:</span> <span class="s">&#39;zzz&#39;</span><span class="p">,</span> <span class="s">&#39;nested&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+        <span class="n">options</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;headers&#39;</span><span class="p">:</span> <span class="n">headers</span><span class="p">}</span>
+
+        <span class="n">job</span> <span class="o">=</span> <span class="n">Async</span><span class="p">(</span><span class="s">&#39;nonexistant&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">headers</span><span class="p">,</span> <span class="n">job</span><span class="o">.</span><span class="n">get_headers</span><span class="p">())</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-53'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-53'>#</a>
+      </div>
+      <p>Ensure get_headers returns the job headers.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">test_get_empty_headers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-54'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-54'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="kn">from</span> <span class="nn">furious.async</span> <span class="kn">import</span> <span class="n">Async</span>
+
+        <span class="n">job</span> <span class="o">=</span> <span class="n">Async</span><span class="p">(</span><span class="s">&#39;nonexistant&#39;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">({},</span> <span class="n">job</span><span class="o">.</span><span class="n">get_headers</span><span class="p">())</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-55'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-55'>#</a>
+      </div>
+      <p>Ensure get_queue returns the job queue.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">test_get_queue</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-56'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-56'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="kn">from</span> <span class="nn">furious.async</span> <span class="kn">import</span> <span class="n">Async</span>
+
+        <span class="n">queue</span> <span class="o">=</span> <span class="s">&quot;test&quot;</span>
+
+        <span class="n">job</span> <span class="o">=</span> <span class="n">Async</span><span class="p">(</span><span class="s">&#39;nonexistant&#39;</span><span class="p">,</span> <span class="n">queue</span><span class="o">=</span><span class="n">queue</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">queue</span><span class="p">,</span> <span class="n">job</span><span class="o">.</span><span class="n">get_queue</span><span class="p">())</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-57'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-57'>#</a>
+      </div>
+      <p>Ensure get_queue returns the default queue if non was given.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">test_get_default_queue</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-58'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-58'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="kn">from</span> <span class="nn">furious.async</span> <span class="kn">import</span> <span class="n">Async</span>
+
+        <span class="n">job</span> <span class="o">=</span> <span class="n">Async</span><span class="p">(</span><span class="s">&#39;nonexistant&#39;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s">&#39;default&#39;</span><span class="p">,</span> <span class="n">job</span><span class="o">.</span><span class="n">get_queue</span><span class="p">())</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-59'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-59'>#</a>
+      </div>
+      <p>Ensure get_task_args returns the job task_args.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">test_get_task_args</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-60'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-60'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="kn">from</span> <span class="nn">furious.async</span> <span class="kn">import</span> <span class="n">Async</span>
+
+        <span class="n">task_args</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;other&#39;</span><span class="p">:</span> <span class="s">&#39;zzz&#39;</span><span class="p">,</span> <span class="s">&#39;nested&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+        <span class="n">options</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;task_args&#39;</span><span class="p">:</span> <span class="n">task_args</span><span class="p">}</span>
+
+        <span class="n">job</span> <span class="o">=</span> <span class="n">Async</span><span class="p">(</span><span class="s">&#39;nonexistant&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">task_args</span><span class="p">,</span> <span class="n">job</span><span class="o">.</span><span class="n">get_task_args</span><span class="p">())</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-61'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-61'>#</a>
+      </div>
+      <p>Ensure get_task_args returns {} if no task_args.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">test_get_empty_task_args</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-62'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-62'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="kn">from</span> <span class="nn">furious.async</span> <span class="kn">import</span> <span class="n">Async</span>
+
+        <span class="n">job</span> <span class="o">=</span> <span class="n">Async</span><span class="p">(</span><span class="s">&#39;nonexistant&#39;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">({},</span> <span class="n">job</span><span class="o">.</span><span class="n">get_task_args</span><span class="p">())</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-63'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-63'>#</a>
+      </div>
+      <p>Ensure to_dict returns a dictionary representation of the Async.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">test_to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-64'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-64'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="kn">from</span> <span class="nn">furious.async</span> <span class="kn">import</span> <span class="n">Async</span>
+
+        <span class="n">task_args</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;other&#39;</span><span class="p">:</span> <span class="s">&#39;zzz&#39;</span><span class="p">,</span> <span class="s">&#39;nested&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+        <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;some&#39;</span><span class="p">:</span> <span class="s">&#39;thing&#39;</span><span class="p">,</span> <span class="s">&#39;fun&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+        <span class="n">options</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;headers&#39;</span><span class="p">:</span> <span class="n">headers</span><span class="p">,</span> <span class="s">&#39;task_args&#39;</span><span class="p">:</span> <span class="n">task_args</span><span class="p">}</span>
+
+        <span class="n">job</span> <span class="o">=</span> <span class="n">Async</span><span class="p">(</span><span class="s">&#39;nonexistant&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span>
+
+        <span class="n">options</span><span class="p">[</span><span class="s">&#39;job&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;nonexistant&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="n">job</span><span class="o">.</span><span class="n">to_dict</span><span class="p">())</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-65'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-65'>#</a>
+      </div>
+      <p>Ensure to_dict correctly encodes callbacks.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">test_to_dict_with_callbacks</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-66'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-66'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="kn">from</span> <span class="nn">furious.async</span> <span class="kn">import</span> <span class="n">Async</span>
+
+        <span class="n">options</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;callbacks&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;success&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">test_to_dict_with_callbacks</span><span class="p">,</span>
+            <span class="s">&#39;failure&#39;</span><span class="p">:</span> <span class="s">&quot;failure_function&quot;</span><span class="p">,</span>
+            <span class="s">&#39;exec&#39;</span><span class="p">:</span> <span class="n">Async</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="nb">dir</span><span class="p">)</span>
+        <span class="p">}}</span>
+
+        <span class="n">job</span> <span class="o">=</span> <span class="n">Async</span><span class="p">(</span><span class="s">&#39;nonexistant&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span>
+
+        <span class="n">options</span><span class="p">[</span><span class="s">&#39;job&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;nonexistant&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+        <span class="n">options</span><span class="p">[</span><span class="s">&#39;callbacks&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;success&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s">&quot;furious.tests.test_async.&quot;</span>
+                        <span class="s">&quot;TestAsync.test_to_dict_with_callbacks&quot;</span><span class="p">),</span>
+            <span class="s">&#39;failure&#39;</span><span class="p">:</span> <span class="s">&quot;failure_function&quot;</span><span class="p">,</span>
+            <span class="s">&#39;exec&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;job&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s">&#39;dir&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">)}</span>
+        <span class="p">}</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="n">job</span><span class="o">.</span><span class="n">to_dict</span><span class="p">())</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-67'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-67'>#</a>
+      </div>
+      <p>Ensure from_dict returns the correct Async object.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">test_from_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-68'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-68'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="kn">from</span> <span class="nn">furious.async</span> <span class="kn">import</span> <span class="n">Async</span>
+
+        <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;some&#39;</span><span class="p">:</span> <span class="s">&#39;thing&#39;</span><span class="p">,</span> <span class="s">&#39;fun&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+        <span class="n">job</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;test&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+        <span class="n">task_args</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;other&#39;</span><span class="p">:</span> <span class="s">&#39;zzz&#39;</span><span class="p">,</span> <span class="s">&#39;nested&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+
+        <span class="n">options</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;job&#39;</span><span class="p">:</span> <span class="n">job</span><span class="p">,</span> <span class="s">&#39;headers&#39;</span><span class="p">:</span> <span class="n">headers</span><span class="p">,</span> <span class="s">&#39;task_args&#39;</span><span class="p">:</span> <span class="n">task_args</span><span class="p">}</span>
+
+        <span class="n">async_job</span> <span class="o">=</span> <span class="n">Async</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">options</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">headers</span><span class="p">,</span> <span class="n">async_job</span><span class="o">.</span><span class="n">get_headers</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">task_args</span><span class="p">,</span> <span class="n">async_job</span><span class="o">.</span><span class="n">get_task_args</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">job</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">async_job</span><span class="o">.</span><span class="n">_function_path</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-69'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-69'>#</a>
+      </div>
+      <p>Ensure from_dict reconstructs callbacks correctly.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">test_from_dict_with_callbacks</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-70'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-70'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="kn">from</span> <span class="nn">furious.async</span> <span class="kn">import</span> <span class="n">Async</span>
+
+        <span class="n">job</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;test&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+        <span class="n">callbacks</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;success&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s">&quot;furious.tests.test_async.&quot;</span>
+                        <span class="s">&quot;TestAsync.test_to_dict_with_callbacks&quot;</span><span class="p">),</span>
+            <span class="s">&#39;failure&#39;</span><span class="p">:</span> <span class="s">&quot;dir&quot;</span><span class="p">,</span>
+            <span class="s">&#39;exec&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;job&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s">&#39;dir&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">)}</span>
+        <span class="p">}</span>
+
+        <span class="n">options</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;job&#39;</span><span class="p">:</span> <span class="n">job</span><span class="p">,</span> <span class="s">&#39;callbacks&#39;</span><span class="p">:</span> <span class="n">callbacks</span><span class="p">}</span>
+
+        <span class="n">async_job</span> <span class="o">=</span> <span class="n">Async</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">options</span><span class="p">)</span>
+
+        <span class="n">check_callbacks</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;success&#39;</span><span class="p">:</span> <span class="n">TestAsync</span><span class="o">.</span><span class="n">test_to_dict_with_callbacks</span><span class="p">,</span>
+            <span class="s">&#39;failure&#39;</span><span class="p">:</span> <span class="nb">dir</span>
+        <span class="p">}</span>
+
+        <span class="n">callbacks</span> <span class="o">=</span> <span class="n">async_job</span><span class="o">.</span><span class="n">get_callbacks</span><span class="p">()</span>
+        <span class="n">exec_callback</span> <span class="o">=</span> <span class="n">callbacks</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;exec&#39;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">check_callbacks</span><span class="p">,</span> <span class="n">callbacks</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">({</span><span class="s">&#39;job&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s">&#39;dir&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">)},</span> <span class="n">exec_callback</span><span class="o">.</span><span class="n">to_dict</span><span class="p">())</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-71'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-71'>#</a>
+      </div>
+      <p>Ensure to_dict(job.from_dict()) returns the same thing.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">test_reconstitution</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-72'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-72'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="kn">from</span> <span class="nn">furious.async</span> <span class="kn">import</span> <span class="n">Async</span>
+
+        <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;some&#39;</span><span class="p">:</span> <span class="s">&#39;thing&#39;</span><span class="p">,</span> <span class="s">&#39;fun&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+        <span class="n">job</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;test&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+        <span class="n">task_args</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;other&#39;</span><span class="p">:</span> <span class="s">&#39;zzz&#39;</span><span class="p">,</span> <span class="s">&#39;nested&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+        <span class="n">options</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;job&#39;</span><span class="p">:</span> <span class="n">job</span><span class="p">,</span> <span class="s">&#39;headers&#39;</span><span class="p">:</span> <span class="n">headers</span><span class="p">,</span> <span class="s">&#39;task_args&#39;</span><span class="p">:</span> <span class="n">task_args</span><span class="p">}</span>
+
+        <span class="n">async_job</span> <span class="o">=</span> <span class="n">Async</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">options</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="n">async_job</span><span class="o">.</span><span class="n">to_dict</span><span class="p">())</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-73'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-73'>#</a>
+      </div>
+      <p>Ensure to_task produces the right task object.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">test_to_task</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-74'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-74'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="kn">import</span> <span class="nn">datetime</span>
+        <span class="kn">import</span> <span class="nn">time</span>
+
+        <span class="kn">from</span> <span class="nn">google.appengine.ext</span> <span class="kn">import</span> <span class="n">testbed</span>
+
+        <span class="kn">from</span> <span class="nn">furious.async</span> <span class="kn">import</span> <span class="n">Async</span>
+        <span class="kn">from</span> <span class="nn">furious.async</span> <span class="kn">import</span> <span class="n">ASYNC_ENDPOINT</span>
+
+        <span class="n">testbed</span> <span class="o">=</span> <span class="n">testbed</span><span class="o">.</span><span class="n">Testbed</span><span class="p">()</span>
+        <span class="n">testbed</span><span class="o">.</span><span class="n">activate</span><span class="p">()</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-75'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-75'>#</a>
+      </div>
+      <p>This just drops the microseconds.  It is a total mess, but is needed
+to handle all the rounding crap.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="n">eta</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">+</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">minutes</span><span class="o">=</span><span class="mi">43</span><span class="p">)</span>
+        <span class="n">eta_posix</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">mktime</span><span class="p">(</span><span class="n">eta</span><span class="o">.</span><span class="n">timetuple</span><span class="p">())</span>
+
+        <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;some&#39;</span><span class="p">:</span> <span class="s">&#39;thing&#39;</span><span class="p">,</span> <span class="s">&#39;fun&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+
+        <span class="n">job</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;test&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+
+        <span class="n">expected_url</span> <span class="o">=</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s">/</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">ASYNC_ENDPOINT</span><span class="p">,</span> <span class="s">&#39;test&#39;</span><span class="p">)</span>
+
+        <span class="n">task_args</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;eta&#39;</span><span class="p">:</span> <span class="n">eta_posix</span><span class="p">}</span>
+        <span class="n">options</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;job&#39;</span><span class="p">:</span> <span class="n">job</span><span class="p">,</span> <span class="s">&#39;headers&#39;</span><span class="p">:</span> <span class="n">headers</span><span class="p">,</span> <span class="s">&#39;task_args&#39;</span><span class="p">:</span> <span class="n">task_args</span><span class="p">}</span>
+
+        <span class="n">task</span> <span class="o">=</span> <span class="n">Async</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">options</span><span class="p">)</span><span class="o">.</span><span class="n">to_task</span><span class="p">()</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-76'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-76'>#</a>
+      </div>
+      <p>App Engine sets these headers by default.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="n">full_headers</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;Host&#39;</span><span class="p">:</span> <span class="s">&#39;testbed.example.com&#39;</span><span class="p">,</span>
+            <span class="s">&#39;X-AppEngine-Current-Namespace&#39;</span><span class="p">:</span> <span class="s">&#39;&#39;</span>
+        <span class="p">}</span>
+        <span class="n">full_headers</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">headers</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">eta_posix</span><span class="p">,</span> <span class="n">task</span><span class="o">.</span><span class="n">eta_posix</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">expected_url</span><span class="p">,</span> <span class="n">task</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">full_headers</span><span class="p">,</span> <span class="n">task</span><span class="o">.</span><span class="n">headers</span><span class="p">)</span>
+
+        <span class="n">options</span><span class="p">[</span><span class="s">&#39;task_args&#39;</span><span class="p">][</span><span class="s">&#39;eta&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span>
+            <span class="n">eta_posix</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span>
+            <span class="n">options</span><span class="p">,</span> <span class="n">Async</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">task</span><span class="o">.</span><span class="n">payload</span><span class="p">))</span><span class="o">.</span><span class="n">get_options</span><span class="p">())</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-77'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-77'>#</a>
+      </div>
+      <p>Ensure attempting to get the result before executing raises.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">test_getting_result_fails</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-78'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-78'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="kn">from</span> <span class="nn">furious.async</span> <span class="kn">import</span> <span class="n">Async</span>
+        <span class="kn">from</span> <span class="nn">furious.async</span> <span class="kn">import</span> <span class="n">NotExecutedError</span>
+
+        <span class="n">job</span> <span class="o">=</span> <span class="n">Async</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="nb">dir</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-79'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-79'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="k">def</span> <span class="nf">get_result</span><span class="p">():</span>
+            <span class="k">return</span> <span class="n">job</span><span class="o">.</span><span class="n">result</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertRaises</span><span class="p">(</span><span class="n">NotExecutedError</span><span class="p">,</span> <span class="n">get_result</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">job</span><span class="o">.</span><span class="n">executed</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-80'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-80'>#</a>
+      </div>
+      <p>Ensure getting the result after executing works.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">test_getting_result</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-81'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-81'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="kn">from</span> <span class="nn">furious.async</span> <span class="kn">import</span> <span class="n">Async</span>
+
+        <span class="n">job</span> <span class="o">=</span> <span class="n">Async</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="nb">dir</span><span class="p">)</span>
+        <span class="n">job</span><span class="o">.</span><span class="n">_executing</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="n">job</span><span class="o">.</span><span class="n">result</span> <span class="o">=</span> <span class="mi">123456</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="mi">123456</span><span class="p">,</span> <span class="n">job</span><span class="o">.</span><span class="n">result</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">job</span><span class="o">.</span><span class="n">executed</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-82'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-82'>#</a>
+      </div>
+      <p>Ensure the result can not be set without the execute flag set.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">test_setting_result_fails</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-83'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-83'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="kn">from</span> <span class="nn">furious.async</span> <span class="kn">import</span> <span class="n">Async</span>
+        <span class="kn">from</span> <span class="nn">furious.async</span> <span class="kn">import</span> <span class="n">NotExecutingError</span>
+
+        <span class="n">job</span> <span class="o">=</span> <span class="n">Async</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="nb">dir</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-84'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-84'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="k">def</span> <span class="nf">set_result</span><span class="p">():</span>
+            <span class="n">job</span><span class="o">.</span><span class="n">result</span> <span class="o">=</span> <span class="mi">123</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertRaises</span><span class="p">(</span><span class="n">NotExecutingError</span><span class="p">,</span> <span class="n">set_result</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">job</span><span class="o">.</span><span class="n">executed</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-85'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-85'>#</a>
+      </div>
+      <p>Ensure the result can be set if the execute flag is set.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">test_setting_result</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-86'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-86'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="kn">from</span> <span class="nn">furious.async</span> <span class="kn">import</span> <span class="n">Async</span>
+
+        <span class="n">job</span> <span class="o">=</span> <span class="n">Async</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="nb">dir</span><span class="p">)</span>
+        <span class="n">job</span><span class="o">.</span><span class="n">executing</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="n">job</span><span class="o">.</span><span class="n">result</span> <span class="o">=</span> <span class="mi">123</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="mi">123</span><span class="p">,</span> <span class="n">job</span><span class="o">.</span><span class="n">result</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">job</span><span class="o">.</span><span class="n">executed</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-87'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-87'>#</a>
+      </div>
+      <p>Ensure the task retries if a transient error is hit.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="nd">@patch</span><span class="p">(</span><span class="s">&#39;google.appengine.api.taskqueue.Queue&#39;</span><span class="p">,</span> <span class="n">autospec</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">test_start_hits_transient_error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">queue_mock</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-88'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-88'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="kn">from</span> <span class="nn">google.appengine.api.taskqueue</span> <span class="kn">import</span> <span class="n">TransientError</span>
+        <span class="kn">from</span> <span class="nn">furious.async</span> <span class="kn">import</span> <span class="n">Async</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-89'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-89'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="n">task</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-90'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-90'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>            <span class="k">def</span> <span class="nf">add_second</span><span class="p">(</span><span class="n">task</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+                <span class="k">assert</span> <span class="n">task</span>
+
+            <span class="n">queue_mock</span><span class="o">.</span><span class="n">return_value</span><span class="o">.</span><span class="n">add</span><span class="o">.</span><span class="n">side_effect</span> <span class="o">=</span> <span class="n">add_second</span>
+            <span class="k">raise</span> <span class="n">TransientError</span><span class="p">()</span>
+
+        <span class="n">queue_mock</span><span class="o">.</span><span class="n">return_value</span><span class="o">.</span><span class="n">add</span><span class="o">.</span><span class="n">side_effect</span> <span class="o">=</span> <span class="n">add</span>
+
+        <span class="n">async_job</span> <span class="o">=</span> <span class="n">Async</span><span class="p">(</span><span class="s">&quot;something&quot;</span><span class="p">,</span> <span class="n">queue</span><span class="o">=</span><span class="s">&#39;my_queue&#39;</span><span class="p">)</span>
+        <span class="n">async_job</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+        <span class="n">queue_mock</span><span class="o">.</span><span class="n">assert_called_with</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&#39;my_queue&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">queue_mock</span><span class="o">.</span><span class="n">return_value</span><span class="o">.</span><span class="n">add</span><span class="o">.</span><span class="n">call_count</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-91'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-91'>#</a>
+      </div>
+      <p>Ensure the task returns if a task already exists error is hit.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="nd">@patch</span><span class="p">(</span><span class="s">&#39;google.appengine.api.taskqueue.Queue&#39;</span><span class="p">,</span> <span class="n">autospec</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">test_start_hits_task_already_exists_error_error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">queue_mock</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-92'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-92'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="kn">from</span> <span class="nn">google.appengine.api.taskqueue</span> <span class="kn">import</span> <span class="n">TaskAlreadyExistsError</span>
+        <span class="kn">from</span> <span class="nn">furious.async</span> <span class="kn">import</span> <span class="n">Async</span>
+
+        <span class="n">queue_mock</span><span class="o">.</span><span class="n">return_value</span><span class="o">.</span><span class="n">add</span><span class="o">.</span><span class="n">side_effect</span> <span class="o">=</span> <span class="n">TaskAlreadyExistsError</span><span class="p">()</span>
+
+        <span class="n">async_job</span> <span class="o">=</span> <span class="n">Async</span><span class="p">(</span><span class="s">&quot;something&quot;</span><span class="p">,</span> <span class="n">queue</span><span class="o">=</span><span class="s">&#39;my_queue&#39;</span><span class="p">)</span>
+        <span class="n">async_job</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+        <span class="n">queue_mock</span><span class="o">.</span><span class="n">assert_called_with</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&#39;my_queue&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">queue_mock</span><span class="o">.</span><span class="n">return_value</span><span class="o">.</span><span class="n">add</span><span class="o">.</span><span class="n">call_count</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-93'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-93'>#</a>
+      </div>
+      <p>Ensure the task returns if a tombstoned task error is hit.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="nd">@patch</span><span class="p">(</span><span class="s">&#39;google.appengine.api.taskqueue.Queue&#39;</span><span class="p">,</span> <span class="n">autospec</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">test_start_hits_tombstoned_task_error_error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">queue_mock</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-94'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-94'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="kn">from</span> <span class="nn">google.appengine.api.taskqueue</span> <span class="kn">import</span> <span class="n">TombstonedTaskError</span>
+        <span class="kn">from</span> <span class="nn">furious.async</span> <span class="kn">import</span> <span class="n">Async</span>
+
+        <span class="n">queue_mock</span><span class="o">.</span><span class="n">return_value</span><span class="o">.</span><span class="n">add</span><span class="o">.</span><span class="n">side_effect</span> <span class="o">=</span> <span class="n">TombstonedTaskError</span><span class="p">()</span>
+
+        <span class="n">async_job</span> <span class="o">=</span> <span class="n">Async</span><span class="p">(</span><span class="s">&quot;something&quot;</span><span class="p">,</span> <span class="n">queue</span><span class="o">=</span><span class="s">&#39;my_queue&#39;</span><span class="p">)</span>
+        <span class="n">async_job</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+        <span class="n">queue_mock</span><span class="o">.</span><span class="n">assert_called_with</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&#39;my_queue&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">queue_mock</span><span class="o">.</span><span class="n">return_value</span><span class="o">.</span><span class="n">add</span><span class="o">.</span><span class="n">call_count</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-95'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-95'>#</a>
+      </div>
+      <p>Ensure the Task is inserted into the specified queue.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="nd">@patch</span><span class="p">(</span><span class="s">&#39;google.appengine.api.taskqueue.Queue&#39;</span><span class="p">,</span> <span class="n">autospec</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">test_start_runs_successfully</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">queue_mock</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-96'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-96'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="kn">from</span> <span class="nn">furious.async</span> <span class="kn">import</span> <span class="n">Async</span>
+
+        <span class="n">async_job</span> <span class="o">=</span> <span class="n">Async</span><span class="p">(</span><span class="s">&quot;something&quot;</span><span class="p">,</span> <span class="n">queue</span><span class="o">=</span><span class="s">&#39;my_queue&#39;</span><span class="p">)</span>
+        <span class="n">async_job</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+        <span class="n">queue_mock</span><span class="o">.</span><span class="n">assert_called_once_with</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&#39;my_queue&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">queue_mock</span><span class="o">.</span><span class="n">return_value</span><span class="o">.</span><span class="n">add</span><span class="o">.</span><span class="n">called</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-97'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-97'>#</a>
+      </div>
+      <p>TODO: Check that the task is the same.
+self.assertEqual(task, queue_mock.add.call_args)</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-98'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-98'>#</a>
+      </div>
+      <p>Ensure that _restart() calls Async.start() again.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="nd">@patch</span><span class="p">(</span><span class="s">&#39;furious.async.Async.start&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">test_restart</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mock_start</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-99'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-99'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="kn">from</span> <span class="nn">furious.async</span> <span class="kn">import</span> <span class="n">Async</span>
+
+        <span class="n">async_job</span> <span class="o">=</span> <span class="n">Async</span><span class="p">(</span><span class="s">&quot;something&quot;</span><span class="p">)</span>
+        <span class="n">async_job</span><span class="o">.</span><span class="n">_executing</span> <span class="o">=</span> <span class="bp">True</span>
+
+        <span class="n">async_job</span><span class="o">.</span><span class="n">_restart</span><span class="p">()</span>
+
+        <span class="n">mock_start</span><span class="o">.</span><span class="n">assert_called_once</span><span class="p">()</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-100'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-100'>#</a>
+      </div>
+      <p>Ensure that _restart() raises a NotExecutingError when restarting</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">test_restart_not_started</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-101'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-101'>#</a>
+      </div>
+      <p>before started.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="kn">from</span> <span class="nn">furious.async</span> <span class="kn">import</span> <span class="n">Async</span>
+        <span class="kn">from</span> <span class="nn">furious.async</span> <span class="kn">import</span> <span class="n">NotExecutingError</span>
+
+        <span class="n">async_job</span> <span class="o">=</span> <span class="n">Async</span><span class="p">(</span><span class="s">&quot;something&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertRaises</span><span class="p">(</span><span class="n">NotExecutingError</span><span class="p">,</span> <span class="n">async_job</span><span class="o">.</span><span class="n">_restart</span><span class="p">,)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-102'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-102'>#</a>
+      </div>
+      <p>Ensure that calling _restart() on a finished Async raises a</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">test_restart_finished_fails</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-103'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-103'>#</a>
+      </div>
+      <p>NotExecutingError.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="kn">from</span> <span class="nn">furious.async</span> <span class="kn">import</span> <span class="n">Async</span>
+        <span class="kn">from</span> <span class="nn">furious.async</span> <span class="kn">import</span> <span class="n">NotExecutingError</span>
+
+        <span class="n">async_job</span> <span class="o">=</span> <span class="n">Async</span><span class="p">(</span><span class="s">&quot;something&quot;</span><span class="p">)</span>
+        <span class="n">async_job</span><span class="o">.</span><span class="n">_executing</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="n">async_job</span><span class="o">.</span><span class="n">result</span> <span class="o">=</span> <span class="s">&#39;result&#39;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertRaises</span><span class="p">(</span><span class="n">NotExecutingError</span><span class="p">,</span> <span class="n">async_job</span><span class="o">.</span><span class="n">_restart</span><span class="p">,)</span>
+
+</pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+</div>
+</body>

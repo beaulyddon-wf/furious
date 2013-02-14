@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title>test_execution_context.py</title>
+  <link rel="stylesheet" href="../../../../pycco.css">
+  <script src="http://code.jquery.com/jquery-latest.js"></script>
+  <script type="text/javascript" charset="utf-8">
+    var slide_it = function( main, details )
+    {
+        main = "#".concat( main );
+        details = "#".concat( details );
+        $(main).click( function() {
+            if ( $( details ).is( ':hidden' ) ) {
+                $( main ).addClass( "active" );
+                $( details ).slideDown( 'fast' );
+            }
+            else {
+                $( details ).slideUp( 'fast' );
+                $( main ).removeClass( "active" );
+            }
+        });
+    };
+</script>
+</head>
+<body>
+<div id="background"></div>
+<div id='container'>
+
+  <div id="jump_to">
+    Jump To &hellip;
+    <div id="jump_wrapper">
+      <div id="jump_page">
+
+            <div id="1" >
+              <a class="source" id="pathname"> furious </a>
+            </div>
+
+            <div id="1_titles" style="display: none;">
+                <a class="source" id="filename" href="../../__init__.html"> __init__.py </a>
+                <a class="source" id="filename" href="../../async.html"> async.py </a>
+                <a class="source" id="filename" href="../../batcher.html"> batcher.py </a>
+            </div>
+
+            <script type="text/javascript" charset="utf-8">
+                slide_it( "1",
+                          "1_titles" );
+              </script>
+            <div id="2" >
+              <a class="source" id="pathname"> furious/context </a>
+            </div>
+
+            <div id="2_titles" style="display: none;">
+                <a class="source" id="filename" href="../../context/__init__.html"> __init__.py </a>
+                <a class="source" id="filename" href="../../context/_execution.html"> _execution.py </a>
+                <a class="source" id="filename" href="../../context/_local.html"> _local.py </a>
+                <a class="source" id="filename" href="../../context/context.html"> context.py </a>
+            </div>
+
+            <script type="text/javascript" charset="utf-8">
+                slide_it( "2",
+                          "2_titles" );
+              </script>
+            <div id="3" >
+              <a class="source" id="pathname"> furious/handlers </a>
+            </div>
+
+            <div id="3_titles" style="display: none;">
+                <a class="source" id="filename" href="../../handlers/__init__.html"> __init__.py </a>
+                <a class="source" id="filename" href="../../handlers/webapp.html"> webapp.py </a>
+            </div>
+
+            <script type="text/javascript" charset="utf-8">
+                slide_it( "3",
+                          "3_titles" );
+              </script>
+            <div id="4" >
+              <a class="source" id="pathname"> furious </a>
+            </div>
+
+            <div id="4_titles" style="display: none;">
+                <a class="source" id="filename" href="../../job_utils.html"> job_utils.py </a>
+                <a class="source" id="filename" href="../../processors.html"> processors.py </a>
+            </div>
+
+            <script type="text/javascript" charset="utf-8">
+                slide_it( "4",
+                          "4_titles" );
+              </script>
+            <div id="5" >
+              <a class="source" id="pathname"> furious/tests </a>
+            </div>
+
+            <div id="5_titles" style="display: none;">
+                <a class="source" id="filename" href="../__init__.html"> __init__.py </a>
+            </div>
+
+            <script type="text/javascript" charset="utf-8">
+                slide_it( "5",
+                          "5_titles" );
+              </script>
+            <div id="6" >
+              <a class="source" id="pathname"> furious/tests/context </a>
+            </div>
+
+            <div id="6_titles" style="display: none;">
+                <a class="source" id="filename" href="./__init__.html"> __init__.py </a>
+                <a class="source" id="filename" href="./test_context.html"> test_context.py </a>
+                <a class="source" id="filename" href="./test_execution_context.html"> test_execution_context.py </a>
+            </div>
+
+            <script type="text/javascript" charset="utf-8">
+                slide_it( "6",
+                          "6_titles" );
+              </script>
+            <div id="7" >
+              <a class="source" id="pathname"> furious/tests </a>
+            </div>
+
+            <div id="7_titles" style="display: none;">
+                <a class="source" id="filename" href="../test_async.html"> test_async.py </a>
+                <a class="source" id="filename" href="../test_batcher.html"> test_batcher.py </a>
+                <a class="source" id="filename" href="../test_job_utils.html"> test_job_utils.py </a>
+                <a class="source" id="filename" href="../test_processors.html"> test_processors.py </a>
+            </div>
+
+            <script type="text/javascript" charset="utf-8">
+                slide_it( "7",
+                          "7_titles" );
+              </script>
+
+      </div>
+    </div>
+  </div>
+
+  <div class='section'>
+    <div class='docs'><h1>test_execution_context.py</h1></div>
+  </div>
+  <div class='clearall'>
+  <div class='section' id='section-0'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-0'>#</a>
+      </div>
+      <p>Copyright 2012 WebFilings, LLC</p>
+<p>Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at</p>
+<p>http://www.apache.org/licenses/LICENSE-2.0</p>
+<p>Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="kn">import</span> <span class="nn">unittest</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-1'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-1'>#</a>
+      </div>
+      <p>Test that the ExecutionContext object functions in some basic way.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">class</span> <span class="nc">TestExecutionContext</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-2'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-2'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-3'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-3'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="kn">import</span> <span class="nn">os</span>
+        <span class="kn">import</span> <span class="nn">uuid</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-4'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-4'>#</a>
+      </div>
+      <p>Ensure each test looks like it is in a new request.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s">&#39;REQUEST_ID_HASH&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">()</span><span class="o">.</span><span class="n">hex</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-5'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-5'>#</a>
+      </div>
+      <p>Ensure _ExecutionContext requires an object as its first arg.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">test_context_requires_async</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-6'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-6'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="kn">from</span> <span class="nn">furious.context._execution</span> <span class="kn">import</span> <span class="n">_ExecutionContext</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertRaises</span><span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span> <span class="n">_ExecutionContext</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-7'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-7'>#</a>
+      </div>
+      <p>Ensure _ExecutionContext requires an Async object as its first arg.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">test_context_requires_async_type_arg</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-8'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-8'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="kn">from</span> <span class="nn">furious.context._execution</span> <span class="kn">import</span> <span class="n">_ExecutionContext</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertRaises</span><span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span> <span class="n">_ExecutionContext</span><span class="p">,</span> <span class="nb">object</span><span class="p">())</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-9'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-9'>#</a>
+      </div>
+      <p>Ensure using a _ExecutionContext as a context manager works.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">test_context_works</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-10'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-10'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="kn">from</span> <span class="nn">furious.async</span> <span class="kn">import</span> <span class="n">Async</span>
+        <span class="kn">from</span> <span class="nn">furious.context._execution</span> <span class="kn">import</span> <span class="n">_ExecutionContext</span>
+
+        <span class="k">with</span> <span class="n">_ExecutionContext</span><span class="p">(</span><span class="n">Async</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="nb">dir</span><span class="p">)):</span>
+            <span class="k">pass</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-11'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-11'>#</a>
+      </div>
+      <p>Ensure _ExecutionContext exposes the async as a property.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">test_async_is_preserved</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-12'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-12'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="kn">from</span> <span class="nn">furious.async</span> <span class="kn">import</span> <span class="n">Async</span>
+        <span class="kn">from</span> <span class="nn">furious.context._execution</span> <span class="kn">import</span> <span class="n">_ExecutionContext</span>
+
+        <span class="n">job</span> <span class="o">=</span> <span class="n">Async</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="nb">dir</span><span class="p">)</span>
+
+        <span class="n">context</span> <span class="o">=</span> <span class="n">_ExecutionContext</span><span class="p">(</span><span class="n">job</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIs</span><span class="p">(</span><span class="n">job</span><span class="p">,</span> <span class="n">context</span><span class="o">.</span><span class="n">async</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-13'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-13'>#</a>
+      </div>
+      <p>Ensure _ExecutionContext async can not be set.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">test_async_is_not_settable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-14'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-14'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="kn">from</span> <span class="nn">furious.async</span> <span class="kn">import</span> <span class="n">Async</span>
+        <span class="kn">from</span> <span class="nn">furious.context._execution</span> <span class="kn">import</span> <span class="n">_ExecutionContext</span>
+
+        <span class="n">job</span> <span class="o">=</span> <span class="n">Async</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="nb">dir</span><span class="p">)</span>
+
+        <span class="n">context</span> <span class="o">=</span> <span class="n">_ExecutionContext</span><span class="p">(</span><span class="n">job</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-15'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-15'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="k">def</span> <span class="nf">set_job</span><span class="p">():</span>
+            <span class="n">context</span><span class="o">.</span><span class="n">async</span> <span class="o">=</span> <span class="bp">None</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertRaises</span><span class="p">(</span><span class="ne">AttributeError</span><span class="p">,</span> <span class="n">set_job</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-16'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-16'>#</a>
+      </div>
+      <p>Ensure entering the context adds the job to the context stack.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">test_job_added_to_local_context</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-17'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-17'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="kn">from</span> <span class="nn">furious.async</span> <span class="kn">import</span> <span class="n">Async</span>
+        <span class="kn">from</span> <span class="nn">furious.context._execution</span> <span class="kn">import</span> <span class="n">_ExecutionContext</span>
+        <span class="kn">from</span> <span class="nn">furious.context._local</span> <span class="kn">import</span> <span class="n">get_local_context</span>
+
+        <span class="n">job</span> <span class="o">=</span> <span class="n">Async</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="nb">dir</span><span class="p">)</span>
+        <span class="k">with</span> <span class="n">_ExecutionContext</span><span class="p">(</span><span class="n">job</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertIn</span><span class="p">(</span><span class="n">job</span><span class="p">,</span> <span class="n">get_local_context</span><span class="p">()</span><span class="o">.</span><span class="n">_executing_async</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-18'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-18'>#</a>
+      </div>
+      <p>Ensure exiting the context removes the job from the context stack.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">test_job_removed_from_local_context</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-19'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-19'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="kn">from</span> <span class="nn">furious.async</span> <span class="kn">import</span> <span class="n">Async</span>
+        <span class="kn">from</span> <span class="nn">furious.context._execution</span> <span class="kn">import</span> <span class="n">_ExecutionContext</span>
+        <span class="kn">from</span> <span class="nn">furious.context._local</span> <span class="kn">import</span> <span class="n">get_local_context</span>
+
+        <span class="n">job</span> <span class="o">=</span> <span class="n">Async</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="nb">dir</span><span class="p">)</span>
+        <span class="k">with</span> <span class="n">_ExecutionContext</span><span class="p">(</span><span class="n">job</span><span class="p">):</span>
+            <span class="k">pass</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertNotIn</span><span class="p">(</span><span class="n">job</span><span class="p">,</span> <span class="n">get_local_context</span><span class="p">()</span><span class="o">.</span><span class="n">_executing_async</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-20'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-20'>#</a>
+      </div>
+      <p>Ensure entering the context adds the job to the end of the job</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">test_job_added_to_end_of_local_context</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-21'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-21'>#</a>
+      </div>
+      <p>context stack.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="kn">from</span> <span class="nn">furious.async</span> <span class="kn">import</span> <span class="n">Async</span>
+        <span class="kn">from</span> <span class="nn">furious.context._execution</span> <span class="kn">import</span> <span class="n">_ExecutionContext</span>
+        <span class="kn">from</span> <span class="nn">furious.context._local</span> <span class="kn">import</span> <span class="n">get_local_context</span>
+
+        <span class="n">job_outer</span> <span class="o">=</span> <span class="n">Async</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="nb">dir</span><span class="p">)</span>
+        <span class="n">job_inner</span> <span class="o">=</span> <span class="n">Async</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="nb">dir</span><span class="p">)</span>
+        <span class="k">with</span> <span class="n">_ExecutionContext</span><span class="p">(</span><span class="n">job_outer</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">get_local_context</span><span class="p">()</span><span class="o">.</span><span class="n">_executing_async</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">job_outer</span><span class="p">,</span>
+                             <span class="n">get_local_context</span><span class="p">()</span><span class="o">.</span><span class="n">_executing_async</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+            <span class="k">with</span> <span class="n">_ExecutionContext</span><span class="p">(</span><span class="n">job_inner</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">get_local_context</span><span class="p">()</span><span class="o">.</span><span class="n">_executing_async</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">job_inner</span><span class="p">,</span>
+                                 <span class="n">get_local_context</span><span class="p">()</span><span class="o">.</span><span class="n">_executing_async</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-22'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-22'>#</a>
+      </div>
+      <p>Ensure entering the context removes the job from the end of the job</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">test_job_removed_from_end_of_local_context</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-23'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-23'>#</a>
+      </div>
+      <p>context stack.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="kn">from</span> <span class="nn">furious.async</span> <span class="kn">import</span> <span class="n">Async</span>
+        <span class="kn">from</span> <span class="nn">furious.context._execution</span> <span class="kn">import</span> <span class="n">_ExecutionContext</span>
+        <span class="kn">from</span> <span class="nn">furious.context._local</span> <span class="kn">import</span> <span class="n">get_local_context</span>
+
+        <span class="n">job_outer</span> <span class="o">=</span> <span class="n">Async</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="nb">dir</span><span class="p">)</span>
+        <span class="n">job_inner</span> <span class="o">=</span> <span class="n">Async</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="nb">dir</span><span class="p">)</span>
+        <span class="k">with</span> <span class="n">_ExecutionContext</span><span class="p">(</span><span class="n">job_outer</span><span class="p">):</span>
+            <span class="k">with</span> <span class="n">_ExecutionContext</span><span class="p">(</span><span class="n">job_inner</span><span class="p">):</span>
+                <span class="k">pass</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">get_local_context</span><span class="p">()</span><span class="o">.</span><span class="n">_executing_async</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">job_outer</span><span class="p">,</span>
+                             <span class="n">get_local_context</span><span class="p">()</span><span class="o">.</span><span class="n">_executing_async</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-24'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-24'>#</a>
+      </div>
+      <p>Ensure wrong context is not popped from execution context stack.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">test_corrupt_context</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-25'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-25'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="kn">from</span> <span class="nn">furious.async</span> <span class="kn">import</span> <span class="n">Async</span>
+        <span class="kn">from</span> <span class="nn">furious.context._execution</span> <span class="kn">import</span> <span class="n">CorruptContextError</span>
+        <span class="kn">from</span> <span class="nn">furious.context._execution</span> <span class="kn">import</span> <span class="n">_ExecutionContext</span>
+        <span class="kn">from</span> <span class="nn">furious.context._local</span> <span class="kn">import</span> <span class="n">get_local_context</span>
+
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">assertRaises</span><span class="p">(</span><span class="n">CorruptContextError</span><span class="p">)</span> <span class="k">as</span> <span class="n">cm</span><span class="p">:</span>
+            <span class="n">job_outer</span> <span class="o">=</span> <span class="n">Async</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="nb">dir</span><span class="p">)</span>
+            <span class="k">with</span> <span class="n">_ExecutionContext</span><span class="p">(</span><span class="n">job_outer</span><span class="p">):</span>
+                <span class="n">local_context</span> <span class="o">=</span> <span class="n">get_local_context</span><span class="p">()</span>
+                <span class="n">local_context</span><span class="o">.</span><span class="n">_executing_async</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">object</span><span class="p">())</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">((</span><span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">),</span> <span class="n">cm</span><span class="o">.</span><span class="n">exception</span><span class="o">.</span><span class="n">exc_info</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-26'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-26'>#</a>
+      </div>
+      <p>Test that the Context object functions in some basic way.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">class</span> <span class="nc">TestExecutionContextFromAsync</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-27'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-27'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-28'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-28'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="kn">import</span> <span class="nn">os</span>
+        <span class="kn">import</span> <span class="nn">uuid</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-29'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-29'>#</a>
+      </div>
+      <p>Ensure each test looks like it is in a new request.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s">&#39;REQUEST_ID_HASH&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">()</span><span class="o">.</span><span class="n">hex</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-30'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-30'>#</a>
+      </div>
+      <p>Ensure ExecutionContext requires an async object as its first arg.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">test_async_required_as_first_argument</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-31'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-31'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="kn">from</span> <span class="nn">furious.context._execution</span> <span class="kn">import</span> <span class="n">execution_context_from_async</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertRaises</span><span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span> <span class="n">execution_context_from_async</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-32'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-32'>#</a>
+      </div>
+      <p>Ensure ExecutionContext requires an Async type object as its first</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">test_async_type_required_as_first_argument</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-33'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-33'>#</a>
+      </div>
+      <p>arg.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="kn">from</span> <span class="nn">furious.context._execution</span> <span class="kn">import</span> <span class="n">execution_context_from_async</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertRaises</span><span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span> <span class="n">execution_context_from_async</span><span class="p">,</span> <span class="nb">object</span><span class="p">())</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-34'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-34'>#</a>
+      </div>
+      <p>Ensure initing twice raises a ContextExistsError.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">test_double_init_raises_error</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-35'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-35'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="kn">from</span> <span class="nn">furious.async</span> <span class="kn">import</span> <span class="n">Async</span>
+        <span class="kn">from</span> <span class="nn">furious.context._execution</span> <span class="kn">import</span> <span class="n">ContextExistsError</span>
+        <span class="kn">from</span> <span class="nn">furious.context._execution</span> <span class="kn">import</span> <span class="n">execution_context_from_async</span>
+
+        <span class="n">execution_context_from_async</span><span class="p">(</span><span class="n">Async</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="nb">dir</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertRaises</span><span class="p">(</span>
+            <span class="n">ContextExistsError</span><span class="p">,</span>
+            <span class="n">execution_context_from_async</span><span class="p">,</span> <span class="n">Async</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="nb">dir</span><span class="p">))</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-36'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-36'>#</a>
+      </div>
+      <p>Ensure the context is set on the local_context.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">test_context_set_on_local_context</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-37'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-37'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="kn">from</span> <span class="nn">furious.async</span> <span class="kn">import</span> <span class="n">Async</span>
+        <span class="kn">from</span> <span class="nn">furious.context._local</span> <span class="kn">import</span> <span class="n">get_local_context</span>
+        <span class="kn">from</span> <span class="nn">furious.context._execution</span> <span class="kn">import</span> <span class="n">execution_context_from_async</span>
+
+        <span class="n">context</span> <span class="o">=</span> <span class="n">execution_context_from_async</span><span class="p">(</span><span class="n">Async</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="nb">dir</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIs</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">get_local_context</span><span class="p">()</span><span class="o">.</span><span class="n">_executing_async_context</span><span class="p">)</span>
+
+</pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+</div>
+</body>

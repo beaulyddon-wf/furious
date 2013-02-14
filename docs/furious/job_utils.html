@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title>job_utils.py</title>
+  <link rel="stylesheet" href="../../pycco.css">
+  <script src="http://code.jquery.com/jquery-latest.js"></script>
+  <script type="text/javascript" charset="utf-8">
+    var slide_it = function( main, details )
+    {
+        main = "#".concat( main );
+        details = "#".concat( details );
+        $(main).click( function() {
+            if ( $( details ).is( ':hidden' ) ) {
+                $( main ).addClass( "active" );
+                $( details ).slideDown( 'fast' );
+            }
+            else {
+                $( details ).slideUp( 'fast' );
+                $( main ).removeClass( "active" );
+            }
+        });
+    };
+</script>
+</head>
+<body>
+<div id="background"></div>
+<div id='container'>
+
+  <div id="jump_to">
+    Jump To &hellip;
+    <div id="jump_wrapper">
+      <div id="jump_page">
+
+            <div id="1" >
+              <a class="source" id="pathname"> furious </a>
+            </div>
+
+            <div id="1_titles" style="display: none;">
+                <a class="source" id="filename" href="./__init__.html"> __init__.py </a>
+                <a class="source" id="filename" href="./async.html"> async.py </a>
+                <a class="source" id="filename" href="./batcher.html"> batcher.py </a>
+            </div>
+
+            <script type="text/javascript" charset="utf-8">
+                slide_it( "1",
+                          "1_titles" );
+              </script>
+            <div id="2" >
+              <a class="source" id="pathname"> furious/context </a>
+            </div>
+
+            <div id="2_titles" style="display: none;">
+                <a class="source" id="filename" href="context/__init__.html"> __init__.py </a>
+                <a class="source" id="filename" href="context/_execution.html"> _execution.py </a>
+                <a class="source" id="filename" href="context/_local.html"> _local.py </a>
+                <a class="source" id="filename" href="context/context.html"> context.py </a>
+            </div>
+
+            <script type="text/javascript" charset="utf-8">
+                slide_it( "2",
+                          "2_titles" );
+              </script>
+            <div id="3" >
+              <a class="source" id="pathname"> furious/handlers </a>
+            </div>
+
+            <div id="3_titles" style="display: none;">
+                <a class="source" id="filename" href="handlers/__init__.html"> __init__.py </a>
+                <a class="source" id="filename" href="handlers/webapp.html"> webapp.py </a>
+            </div>
+
+            <script type="text/javascript" charset="utf-8">
+                slide_it( "3",
+                          "3_titles" );
+              </script>
+            <div id="4" >
+              <a class="source" id="pathname"> furious </a>
+            </div>
+
+            <div id="4_titles" style="display: none;">
+                <a class="source" id="filename" href="./job_utils.html"> job_utils.py </a>
+                <a class="source" id="filename" href="./processors.html"> processors.py </a>
+            </div>
+
+            <script type="text/javascript" charset="utf-8">
+                slide_it( "4",
+                          "4_titles" );
+              </script>
+            <div id="5" >
+              <a class="source" id="pathname"> furious/tests </a>
+            </div>
+
+            <div id="5_titles" style="display: none;">
+                <a class="source" id="filename" href="tests/__init__.html"> __init__.py </a>
+            </div>
+
+            <script type="text/javascript" charset="utf-8">
+                slide_it( "5",
+                          "5_titles" );
+              </script>
+            <div id="6" >
+              <a class="source" id="pathname"> furious/tests/context </a>
+            </div>
+
+            <div id="6_titles" style="display: none;">
+                <a class="source" id="filename" href="tests/context/__init__.html"> __init__.py </a>
+                <a class="source" id="filename" href="tests/context/test_context.html"> test_context.py </a>
+                <a class="source" id="filename" href="tests/context/test_execution_context.html"> test_execution_context.py </a>
+            </div>
+
+            <script type="text/javascript" charset="utf-8">
+                slide_it( "6",
+                          "6_titles" );
+              </script>
+            <div id="7" >
+              <a class="source" id="pathname"> furious/tests </a>
+            </div>
+
+            <div id="7_titles" style="display: none;">
+                <a class="source" id="filename" href="tests/test_async.html"> test_async.py </a>
+                <a class="source" id="filename" href="tests/test_batcher.html"> test_batcher.py </a>
+                <a class="source" id="filename" href="tests/test_job_utils.html"> test_job_utils.py </a>
+                <a class="source" id="filename" href="tests/test_processors.html"> test_processors.py </a>
+            </div>
+
+            <script type="text/javascript" charset="utf-8">
+                slide_it( "7",
+                          "7_titles" );
+              </script>
+
+      </div>
+    </div>
+  </div>
+
+  <div class='section'>
+    <div class='docs'><h1>job_utils.py</h1></div>
+  </div>
+  <div class='clearall'>
+  <div class='section' id='section-0'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-0'>#</a>
+      </div>
+      <p>Copyright 2012 WebFilings, LLC</p>
+<p>Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at</p>
+<p>http://www.apache.org/licenses/LICENSE-2.0</p>
+<p>Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-1'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-1'>#</a>
+      </div>
+      <p>Functions to help with encoding and decoding job information.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="kn">import</span> <span class="nn">sys</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-2'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-2'>#</a>
+      </div>
+      <p>Invalid function path.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">class</span> <span class="nc">BadFunctionPathError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-3'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-3'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-4'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-4'>#</a>
+      </div>
+      <p>Validates <code>function</code> is a potentially valid path or reference to</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">get_function_path_and_options</span><span class="p">(</span><span class="n">function</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-5'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-5'>#</a>
+      </div>
+      <p>a function and returns the cleansed path to the function.</p>
+<p>Strings are checked to ensure they conform to Python's identifier
+requirements:
+    http://docs.python.org/reference/lexical_analysis.html#identifiers</p>
+<p>Functions passed by reference must be at the top-level of the containing
+module.</p>
+<p>Returns the function path and options.</p>
+<p>Try to pop the options off whatever they passed in.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="n">options</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">function</span><span class="p">,</span> <span class="s">&#39;_async_options&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">function</span><span class="p">,</span> <span class="nb">basestring</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-6'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-6'>#</a>
+      </div>
+      <p>This is a function name in str form.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="kn">import</span> <span class="nn">re</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s">r&#39;^[^\d\W]([a-zA-Z._]|((?&lt;!\.)\d))+$&#39;</span><span class="p">,</span> <span class="n">function</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">BadFunctionPathError</span><span class="p">(</span>
+                <span class="s">&#39;Invalid function path, must meet Python</span><span class="se">\&#39;</span><span class="s">s identifier &#39;</span>
+                <span class="s">&#39;requirements, passed value was &quot;</span><span class="si">%s</span><span class="s">&quot;.&#39;</span><span class="p">,</span> <span class="n">function</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">function</span><span class="p">,</span> <span class="n">options</span>
+
+    <span class="k">if</span> <span class="nb">callable</span><span class="p">(</span><span class="n">function</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-7'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-7'>#</a>
+      </div>
+      <p>Try to figure out the path to the function.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="k">try</span><span class="p">:</span>
+            <span class="n">parts</span> <span class="o">=</span> <span class="p">[</span><span class="n">function</span><span class="o">.</span><span class="n">__module__</span><span class="p">]</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">function</span><span class="p">,</span> <span class="s">&#39;im_class&#39;</span><span class="p">):</span>
+                <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">function</span><span class="o">.</span><span class="n">im_class</span><span class="o">.</span><span class="n">__name__</span><span class="p">)</span>
+            <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">function</span><span class="o">.</span><span class="n">func_name</span><span class="p">)</span>
+
+            <span class="k">return</span> <span class="p">(</span><span class="s">&#39;.&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">parts</span><span class="p">),</span> <span class="n">options</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">function</span><span class="o">.</span><span class="n">__module__</span> <span class="o">==</span> <span class="s">&#39;__builtin__&#39;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">function</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span> <span class="n">options</span>
+
+        <span class="k">raise</span> <span class="n">BadFunctionPathError</span><span class="p">(</span><span class="s">&quot;Unable to determine path to callable.&quot;</span><span class="p">)</span>
+
+    <span class="k">raise</span> <span class="n">BadFunctionPathError</span><span class="p">(</span><span class="s">&quot;Must provide a function path or reference.&quot;</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-8'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-8'>#</a>
+      </div>
+      <p>Convert a function path reference to a reference.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">function_path_to_reference</span><span class="p">(</span><span class="n">function_path</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-9'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-9'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">if</span> <span class="s">&#39;.&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">function_path</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">globals</span><span class="p">()[</span><span class="s">&quot;__builtins__&quot;</span><span class="p">][</span><span class="n">function_path</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="nb">globals</span><span class="p">()[</span><span class="s">&quot;__builtins__&quot;</span><span class="p">],</span> <span class="n">function_path</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                <span class="k">pass</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">globals</span><span class="p">()[</span><span class="n">function_path</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">pass</span>
+
+        <span class="k">raise</span> <span class="n">BadFunctionPathError</span><span class="p">(</span>
+            <span class="s">&#39;Unable to find function &quot;</span><span class="si">%s</span><span class="s">&quot;.&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">function_path</span><span class="p">,))</span>
+
+    <span class="n">module_path</span><span class="p">,</span> <span class="n">function_name</span> <span class="o">=</span> <span class="n">function_path</span><span class="o">.</span><span class="n">rsplit</span><span class="p">(</span><span class="s">&#39;.&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">module_path</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">:</span>
+        <span class="n">module</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">module_path</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">module</span> <span class="o">=</span> <span class="nb">__import__</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">module_path</span><span class="p">,</span> <span class="n">fromlist</span><span class="o">=</span><span class="p">[</span><span class="n">function_name</span><span class="p">])</span>
+        <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+            <span class="n">module_path</span><span class="p">,</span> <span class="n">class_name</span> <span class="o">=</span> <span class="n">module_path</span><span class="o">.</span><span class="n">rsplit</span><span class="p">(</span><span class="s">&#39;.&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">module</span> <span class="o">=</span> <span class="nb">__import__</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">module_path</span><span class="p">,</span> <span class="n">fromlist</span><span class="o">=</span><span class="p">[</span><span class="n">class_name</span><span class="p">])</span>
+            <span class="n">module</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">class_name</span><span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">function_name</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">BadFunctionPathError</span><span class="p">(</span>
+            <span class="s">&#39;Unable to find function &quot;</span><span class="si">%s</span><span class="s">&quot;.&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">function_path</span><span class="p">,))</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-10'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-10'>#</a>
+      </div>
+      <p>Encode callbacks to as a dict suitable for JSON encoding.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">encode_callbacks</span><span class="p">(</span><span class="n">callbacks</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-11'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-11'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="kn">from</span> <span class="nn">.async</span> <span class="kn">import</span> <span class="n">Async</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">callbacks</span><span class="p">:</span>
+        <span class="k">return</span>
+
+    <span class="n">encoded_callbacks</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">event</span><span class="p">,</span> <span class="n">callback</span> <span class="ow">in</span> <span class="n">callbacks</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+        <span class="k">if</span> <span class="nb">callable</span><span class="p">(</span><span class="n">callback</span><span class="p">):</span>
+            <span class="n">callback</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">get_function_path_and_options</span><span class="p">(</span><span class="n">callback</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">callback</span><span class="p">,</span> <span class="n">Async</span><span class="p">):</span>
+            <span class="n">callback</span> <span class="o">=</span> <span class="n">callback</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+
+        <span class="n">encoded_callbacks</span><span class="p">[</span><span class="n">event</span><span class="p">]</span> <span class="o">=</span> <span class="n">callback</span>
+
+    <span class="k">return</span> <span class="n">encoded_callbacks</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-12'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-12'>#</a>
+      </div>
+      <p>Decode the callbacks to an executable form.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">decode_callbacks</span><span class="p">(</span><span class="n">encoded_callbacks</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-13'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-13'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="kn">from</span> <span class="nn">.async</span> <span class="kn">import</span> <span class="n">Async</span>
+
+    <span class="n">callbacks</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">event</span><span class="p">,</span> <span class="n">callback</span> <span class="ow">in</span> <span class="n">encoded_callbacks</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">callback</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="n">callback</span> <span class="o">=</span> <span class="n">Async</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">callback</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">callback</span> <span class="o">=</span> <span class="n">function_path_to_reference</span><span class="p">(</span><span class="n">callback</span><span class="p">)</span>
+
+        <span class="n">callbacks</span><span class="p">[</span><span class="n">event</span><span class="p">]</span> <span class="o">=</span> <span class="n">callback</span>
+
+    <span class="k">return</span> <span class="n">callbacks</span>
+
+</pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+</div>
+</body>

@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title>processors.py</title>
+  <link rel="stylesheet" href="../../pycco.css">
+  <script src="http://code.jquery.com/jquery-latest.js"></script>
+  <script type="text/javascript" charset="utf-8">
+    var slide_it = function( main, details )
+    {
+        main = "#".concat( main );
+        details = "#".concat( details );
+        $(main).click( function() {
+            if ( $( details ).is( ':hidden' ) ) {
+                $( main ).addClass( "active" );
+                $( details ).slideDown( 'fast' );
+            }
+            else {
+                $( details ).slideUp( 'fast' );
+                $( main ).removeClass( "active" );
+            }
+        });
+    };
+</script>
+</head>
+<body>
+<div id="background"></div>
+<div id='container'>
+
+  <div id="jump_to">
+    Jump To &hellip;
+    <div id="jump_wrapper">
+      <div id="jump_page">
+
+            <div id="1" >
+              <a class="source" id="pathname"> furious </a>
+            </div>
+
+            <div id="1_titles" style="display: none;">
+                <a class="source" id="filename" href="./__init__.html"> __init__.py </a>
+                <a class="source" id="filename" href="./async.html"> async.py </a>
+                <a class="source" id="filename" href="./batcher.html"> batcher.py </a>
+            </div>
+
+            <script type="text/javascript" charset="utf-8">
+                slide_it( "1",
+                          "1_titles" );
+              </script>
+            <div id="2" >
+              <a class="source" id="pathname"> furious/context </a>
+            </div>
+
+            <div id="2_titles" style="display: none;">
+                <a class="source" id="filename" href="context/__init__.html"> __init__.py </a>
+                <a class="source" id="filename" href="context/_execution.html"> _execution.py </a>
+                <a class="source" id="filename" href="context/_local.html"> _local.py </a>
+                <a class="source" id="filename" href="context/context.html"> context.py </a>
+            </div>
+
+            <script type="text/javascript" charset="utf-8">
+                slide_it( "2",
+                          "2_titles" );
+              </script>
+            <div id="3" >
+              <a class="source" id="pathname"> furious/handlers </a>
+            </div>
+
+            <div id="3_titles" style="display: none;">
+                <a class="source" id="filename" href="handlers/__init__.html"> __init__.py </a>
+                <a class="source" id="filename" href="handlers/webapp.html"> webapp.py </a>
+            </div>
+
+            <script type="text/javascript" charset="utf-8">
+                slide_it( "3",
+                          "3_titles" );
+              </script>
+            <div id="4" >
+              <a class="source" id="pathname"> furious </a>
+            </div>
+
+            <div id="4_titles" style="display: none;">
+                <a class="source" id="filename" href="./job_utils.html"> job_utils.py </a>
+                <a class="source" id="filename" href="./processors.html"> processors.py </a>
+            </div>
+
+            <script type="text/javascript" charset="utf-8">
+                slide_it( "4",
+                          "4_titles" );
+              </script>
+            <div id="5" >
+              <a class="source" id="pathname"> furious/tests </a>
+            </div>
+
+            <div id="5_titles" style="display: none;">
+                <a class="source" id="filename" href="tests/__init__.html"> __init__.py </a>
+            </div>
+
+            <script type="text/javascript" charset="utf-8">
+                slide_it( "5",
+                          "5_titles" );
+              </script>
+            <div id="6" >
+              <a class="source" id="pathname"> furious/tests/context </a>
+            </div>
+
+            <div id="6_titles" style="display: none;">
+                <a class="source" id="filename" href="tests/context/__init__.html"> __init__.py </a>
+                <a class="source" id="filename" href="tests/context/test_context.html"> test_context.py </a>
+                <a class="source" id="filename" href="tests/context/test_execution_context.html"> test_execution_context.py </a>
+            </div>
+
+            <script type="text/javascript" charset="utf-8">
+                slide_it( "6",
+                          "6_titles" );
+              </script>
+            <div id="7" >
+              <a class="source" id="pathname"> furious/tests </a>
+            </div>
+
+            <div id="7_titles" style="display: none;">
+                <a class="source" id="filename" href="tests/test_async.html"> test_async.py </a>
+                <a class="source" id="filename" href="tests/test_batcher.html"> test_batcher.py </a>
+                <a class="source" id="filename" href="tests/test_job_utils.html"> test_job_utils.py </a>
+                <a class="source" id="filename" href="tests/test_processors.html"> test_processors.py </a>
+            </div>
+
+            <script type="text/javascript" charset="utf-8">
+                slide_it( "7",
+                          "7_titles" );
+              </script>
+
+      </div>
+    </div>
+  </div>
+
+  <div class='section'>
+    <div class='docs'><h1>processors.py</h1></div>
+  </div>
+  <div class='clearall'>
+  <div class='section' id='section-0'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-0'>#</a>
+      </div>
+      <p>Copyright 2012 WebFilings, LLC</p>
+<p>Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at</p>
+<p>http://www.apache.org/licenses/LICENSE-2.0</p>
+<p>Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.</p>
+<p>These functions are used to run an Async job.  These are the "real" worker</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-1'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-1'>#</a>
+      </div>
+      <p>functions.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
+
+<span class="kn">from</span> <span class="nn">.async</span> <span class="kn">import</span> <span class="n">AbortAndRestart</span>
+<span class="kn">from</span> <span class="nn">.async</span> <span class="kn">import</span> <span class="n">Async</span>
+<span class="kn">from</span> <span class="nn">.context</span> <span class="kn">import</span> <span class="n">Context</span>
+<span class="kn">from</span> <span class="nn">.context</span> <span class="kn">import</span> <span class="n">get_current_async</span>
+<span class="kn">from</span> <span class="nn">.job_utils</span> <span class="kn">import</span> <span class="n">function_path_to_reference</span>
+
+
+<span class="n">AsyncException</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s">&#39;AsyncException&#39;</span><span class="p">,</span> <span class="s">&#39;error args traceback exception&#39;</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-2'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-2'>#</a>
+      </div>
+      <p>The base class other Async errors can subclass.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">class</span> <span class="nc">AsyncError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-3'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-3'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-4'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-4'>#</a>
+      </div>
+      <p>Takes an async object and executes its job.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">run_job</span><span class="p">():</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-5'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-5'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="n">async</span> <span class="o">=</span> <span class="n">get_current_async</span><span class="p">()</span>
+    <span class="n">async_options</span> <span class="o">=</span> <span class="n">async</span><span class="o">.</span><span class="n">get_options</span><span class="p">()</span>
+
+    <span class="n">job</span> <span class="o">=</span> <span class="n">async_options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;job&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">job</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&#39;This async contains no job to execute!&#39;</span><span class="p">)</span>
+
+    <span class="n">function_path</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span> <span class="o">=</span> <span class="n">job</span>
+
+    <span class="k">if</span> <span class="n">args</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">kwargs</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="n">function</span> <span class="o">=</span> <span class="n">function_path_to_reference</span><span class="p">(</span><span class="n">function_path</span><span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">async</span><span class="o">.</span><span class="n">executing</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="n">async</span><span class="o">.</span><span class="n">result</span> <span class="o">=</span> <span class="n">function</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">AbortAndRestart</span> <span class="k">as</span> <span class="n">restart</span><span class="p">:</span>
+        <span class="kn">import</span> <span class="nn">logging</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;Async job was aborted and restarted: </span><span class="si">%r</span><span class="s">&#39;</span><span class="p">,</span> <span class="n">restart</span><span class="p">)</span>
+        <span class="n">async</span><span class="o">.</span><span class="n">_restart</span><span class="p">()</span>
+        <span class="k">return</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">async</span><span class="o">.</span><span class="n">result</span> <span class="o">=</span> <span class="n">encode_exception</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+
+    <span class="n">results_processor</span> <span class="o">=</span> <span class="n">async_options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;_process_results&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">results_processor</span><span class="p">:</span>
+        <span class="n">results_processor</span> <span class="o">=</span> <span class="n">_process_results</span>
+
+    <span class="n">processor_result</span> <span class="o">=</span> <span class="n">results_processor</span><span class="p">()</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">processor_result</span><span class="p">,</span> <span class="p">(</span><span class="n">Async</span><span class="p">,</span> <span class="n">Context</span><span class="p">)):</span>
+        <span class="n">processor_result</span><span class="o">.</span><span class="n">start</span><span class="p">()</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-6'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-6'>#</a>
+      </div>
+      <p>Encode exception to a form that can be passed around and serialized.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">encode_exception</span><span class="p">(</span><span class="n">exception</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-7'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-7'>#</a>
+      </div>
+      <p>This will grab the stack, then strip off the last two calls which are
+encode_exception and the function that called it.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="kn">import</span> <span class="nn">traceback</span>
+    <span class="k">return</span> <span class="n">AsyncException</span><span class="p">(</span><span class="nb">unicode</span><span class="p">(</span><span class="n">exception</span><span class="p">),</span>
+                          <span class="n">exception</span><span class="o">.</span><span class="n">args</span><span class="p">,</span>
+                          <span class="n">traceback</span><span class="o">.</span><span class="n">extract_stack</span><span class="p">()[:</span><span class="o">-</span><span class="mi">2</span><span class="p">],</span>
+                          <span class="n">exception</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-8'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-8'>#</a>
+      </div>
+      <p>Process the results from an Async job.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">_process_results</span><span class="p">():</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-9'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-9'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="n">async</span> <span class="o">=</span> <span class="n">get_current_async</span><span class="p">()</span>
+    <span class="n">callbacks</span> <span class="o">=</span> <span class="n">async</span><span class="o">.</span><span class="n">get_callbacks</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">async</span><span class="o">.</span><span class="n">result</span><span class="p">,</span> <span class="n">AsyncException</span><span class="p">):</span>
+        <span class="n">error_callback</span> <span class="o">=</span> <span class="n">callbacks</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;error&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">error_callback</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">async</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">exception</span>
+
+        <span class="k">return</span> <span class="n">_execute_callback</span><span class="p">(</span><span class="n">async</span><span class="p">,</span> <span class="n">error_callback</span><span class="p">)</span>
+
+    <span class="n">success_callback</span> <span class="o">=</span> <span class="n">callbacks</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;success&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_execute_callback</span><span class="p">(</span><span class="n">async</span><span class="p">,</span> <span class="n">success_callback</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-10'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-10'>#</a>
+      </div>
+      <p>Execute the given callback or insert the Async callback, or if no</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">_execute_callback</span><span class="p">(</span><span class="n">async</span><span class="p">,</span> <span class="n">callback</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-11'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-11'>#</a>
+      </div>
+      <p>callback is given return the async.result.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="kn">from</span> <span class="nn">furious.async</span> <span class="kn">import</span> <span class="n">Async</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">callback</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">async</span><span class="o">.</span><span class="n">result</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">callback</span><span class="p">,</span> <span class="n">Async</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">callback</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">callback</span><span class="p">()</span>
+
+</pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+</div>
+</body>
